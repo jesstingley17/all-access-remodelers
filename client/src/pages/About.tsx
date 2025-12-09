@@ -34,10 +34,10 @@ export default function About() {
       <Header />
 
       <main className="flex-1">
-        <section className="py-24 pb-20 bg-gradient-to-br from-[#1a3a5c] to-[#0d2a42] text-white text-center" data-testid="section-about-hero">
+        <section className="py-24 pb-20 bg-gradient-to-br from-[#111418] to-[#1C1C1C] text-white text-center" data-testid="section-about-hero">
           <div className="max-w-[1200px] mx-auto px-5">
             <div className="text-center">
-              <span className="inline-block text-[0.8rem] font-semibold text-[#ff6b35] uppercase tracking-[3px] mb-4 opacity-90">
+              <span className="inline-block text-[0.8rem] font-semibold text-[#C89B3C] uppercase tracking-[3px] mb-4 opacity-90">
                 Who We Are
               </span>
               <h2 className="text-[2.75rem] text-white font-semibold tracking-[-0.5px] leading-[1.2] mb-4">
@@ -53,8 +53,8 @@ export default function About() {
         <section className="py-24 bg-[#fafafa]" data-testid="section-about-story">
           <div className="max-w-[1200px] mx-auto px-5">
             <div className="max-w-[800px] mx-auto">
-              <Card className="bg-white p-12 rounded-xl shadow-sm border border-[#1a3a5c]/8" data-testid="card-story">
-                <h3 className="text-[2rem] text-[#1a3a5c] font-semibold tracking-[-0.3px] mb-6 text-center">
+              <Card className="bg-white p-12 rounded-xl shadow-sm border border-[#111418]/8" data-testid="card-story">
+                <h3 className="text-[2rem] text-[#111418] font-semibold tracking-[-0.3px] mb-6 text-center">
                   Our Story
                 </h3>
                 <div className="text-[#4a4a4a] leading-[1.9] text-[1.05rem] space-y-6">
@@ -72,7 +72,7 @@ export default function About() {
                   </p>
                 </div>
                 <div className="mt-8 text-right">
-                  <p className="text-[#1a3a5c] font-semibold text-lg">- Ali</p>
+                  <p className="text-[#111418] font-semibold text-lg">- Ali</p>
                   <p className="text-[#6a6a6a] text-sm">Founder, All Access Remodelers</p>
                 </div>
               </Card>
@@ -83,10 +83,10 @@ export default function About() {
         <section className="py-24 bg-white" data-testid="section-about-values">
           <div className="max-w-[1200px] mx-auto px-5">
             <div className="text-center mb-16">
-              <span className="inline-block text-[0.8rem] font-semibold text-[#ff6b35] uppercase tracking-[3px] mb-4 opacity-90">
+              <span className="inline-block text-[0.8rem] font-semibold text-[#C89B3C] uppercase tracking-[3px] mb-4 opacity-90">
                 What Drives Us
               </span>
-              <h2 className="text-[2.75rem] text-[#1a3a5c] font-semibold tracking-[-0.5px] leading-[1.2] mb-4">
+              <h2 className="text-[2.75rem] text-[#111418] font-semibold tracking-[-0.5px] leading-[1.2] mb-4">
                 Our Values
               </h2>
             </div>
@@ -94,14 +94,14 @@ export default function About() {
               {values.map((value, index) => (
                 <Card
                   key={index}
-                  className="bg-white p-10 rounded-xl shadow-sm text-center transition-all duration-400 relative overflow-visible border border-[#1a3a5c]/8 group hover:-translate-y-2 hover:shadow-lg hover:border-[#ff6b35]/20"
+                  className="bg-white p-10 rounded-xl shadow-sm text-center transition-all duration-400 relative overflow-visible border border-[#111418]/8 group hover:-translate-y-2 hover:shadow-lg hover:border-[#C89B3C]/20"
                   data-testid={`card-value-${index}`}
                 >
-                  <div className="absolute top-0 left-0 right-0 h-[3px] bg-[#ff6b35] transform scale-x-0 transition-transform duration-400 group-hover:scale-x-100 origin-left" />
+                  <div className="absolute top-0 left-0 right-0 h-[3px] bg-[#C89B3C] transform scale-x-0 transition-transform duration-400 group-hover:scale-x-100 origin-left" />
                   <div className="bg-[#fafafa] rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-6 transition-all duration-300 group-hover:scale-110">
-                    <value.icon className="w-10 h-10 text-[#1a3a5c]" />
+                    <value.icon className="w-10 h-10 text-[#111418]" />
                   </div>
-                  <h3 className="text-[1.5rem] text-[#1a3a5c] font-semibold tracking-[-0.3px] mb-4">
+                  <h3 className="text-[1.5rem] text-[#111418] font-semibold tracking-[-0.3px] mb-4">
                     {value.title}
                   </h3>
                   <p className="text-[#4a4a4a] leading-[1.8] text-base font-normal">
@@ -113,7 +113,7 @@ export default function About() {
           </div>
         </section>
 
-        <section className="py-24 bg-[#1a3a5c] text-white text-center" data-testid="section-about-cta">
+        <section className="py-24 bg-[#111418] text-white text-center" data-testid="section-about-cta">
           <div className="max-w-[1200px] mx-auto px-5">
             <h2 className="text-[2.5rem] font-semibold tracking-[-0.5px] leading-[1.2] mb-5">
               Ready to Get Started?
@@ -124,7 +124,7 @@ export default function About() {
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
               <a
                 href="tel:+16146323495"
-                className="inline-flex items-center bg-[#ff6b35] text-white px-8 py-4 text-[1rem] font-semibold rounded-lg transition-all duration-300 shadow-[0_4px_16px_rgba(255,107,53,0.3)] hover:-translate-y-0.5 hover:bg-[#e55a2b]"
+                className="inline-flex items-center bg-[#C89B3C] text-[#111418] px-8 py-4 text-[1rem] font-semibold rounded-lg transition-all duration-300 shadow-[0_4px_16px_rgba(200,155,60,0.3)] hover:-translate-y-0.5 hover:bg-[#b88c35]"
                 data-testid="link-call-us"
               >
                 Call Us: +1 (614) 632-3495

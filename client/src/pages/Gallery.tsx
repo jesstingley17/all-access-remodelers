@@ -35,10 +35,10 @@ export default function Gallery() {
       <Header />
 
       <main className="flex-1">
-        <section className="py-24 pb-20 bg-gradient-to-br from-[#1a3a5c] to-[#0d2a42] text-white text-center" data-testid="section-gallery-hero">
+        <section className="py-24 pb-20 bg-gradient-to-br from-[#111418] to-[#1C1C1C] text-white text-center" data-testid="section-gallery-hero">
           <div className="max-w-[1200px] mx-auto px-5">
             <div className="text-center">
-              <span className="inline-block text-[0.8rem] font-semibold text-[#ff6b35] uppercase tracking-[3px] mb-4 opacity-90">
+              <span className="inline-block text-[0.8rem] font-semibold text-[#C89B3C] uppercase tracking-[3px] mb-4 opacity-90">
                 Our Portfolio
               </span>
               <h2 className="text-[2.75rem] text-white font-semibold tracking-[-0.5px] leading-[1.2] mb-4">
@@ -62,8 +62,8 @@ export default function Gallery() {
                   className={cn(
                     "px-6 py-2 text-sm font-medium rounded-lg",
                     activeCategory === category
-                      ? "bg-[#ff6b35] text-white border-[#ff6b35]"
-                      : "bg-white text-[#4a4a4a] border-[#1a3a5c]/20"
+                      ? "bg-[#C89B3C] text-[#111418] border-[#C89B3C]"
+                      : "bg-white text-[#4a4a4a] border-[#111418]/20"
                   )}
                   data-testid={`button-filter-${category.toLowerCase().replace(' ', '-')}`}
                 >
@@ -76,10 +76,10 @@ export default function Gallery() {
               {filteredItems.map((item) => (
                 <div
                   key={item.id}
-                  className="relative rounded-lg overflow-hidden bg-[#e0e0e0] aspect-[4/3] group cursor-pointer shadow-sm transition-all duration-300 hover:shadow-lg hover:-translate-y-1"
+                  className="relative rounded-lg overflow-hidden bg-[#2C2C2C] aspect-[4/3] group cursor-pointer shadow-sm transition-all duration-300 hover:shadow-lg hover:-translate-y-1"
                   data-testid={`gallery-item-${item.id}`}
                 >
-                  <div className="absolute inset-0 flex items-center justify-center text-[#6a6a6a] font-medium text-lg">
+                  <div className="absolute inset-0 flex items-center justify-center text-[#9a9a9a] font-medium text-lg">
                     {item.placeholder}
                   </div>
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4">
@@ -98,17 +98,17 @@ export default function Gallery() {
           </div>
         </section>
 
-        <section className="py-24 bg-[#ff6b35] text-white text-center" data-testid="section-gallery-cta">
+        <section className="py-24 bg-[#C89B3C] text-[#111418] text-center" data-testid="section-gallery-cta">
           <div className="max-w-[1200px] mx-auto px-5">
             <h2 className="text-[2.5rem] font-semibold tracking-[-0.5px] leading-[1.2] mb-5">
               Ready to Start Your Project?
             </h2>
-            <p className="text-[1.2rem] mb-8 opacity-95 max-w-[580px] mx-auto leading-[1.7]">
+            <p className="text-[1.2rem] mb-8 opacity-90 max-w-[580px] mx-auto leading-[1.7]">
               Let's bring your vision to life. Contact us for a free consultation and estimate.
             </p>
             <a
               href="tel:+16146323495"
-              className="inline-flex items-center bg-white text-[#1a3a5c] px-10 py-4 text-[1.1rem] font-semibold rounded-lg transition-all duration-300 shadow-[0_4px_20px_rgba(0,0,0,0.2)] hover:-translate-y-0.5 hover:shadow-[0_8px_32px_rgba(0,0,0,0.3)] hover:bg-[#fafafa]"
+              className="inline-flex items-center bg-[#111418] text-white px-10 py-4 text-[1.1rem] font-semibold rounded-lg transition-all duration-300 shadow-[0_4px_20px_rgba(0,0,0,0.3)] hover:-translate-y-0.5 hover:shadow-[0_8px_32px_rgba(0,0,0,0.4)] hover:bg-[#1C1C1C]"
               data-testid="link-contact-us"
             >
               Contact Us Today

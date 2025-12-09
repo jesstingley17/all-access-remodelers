@@ -15,7 +15,7 @@ export function Header() {
               />
             </div>
           </Link>
-          <h1 className="text-[2.5rem] font-bold text-[#1a3a5c] mb-3.5 tracking-[4px] uppercase leading-tight animate-fade-in-up">
+          <h1 className="text-[2.5rem] font-bold text-[#111418] mb-3.5 tracking-[4px] uppercase leading-tight animate-fade-in-up">
             ALL ACCESS REMODELERS
           </h1>
           <p className="text-[0.95rem] text-[#4a4a4a] tracking-[3px] font-medium uppercase opacity-90 animate-fade-in-up-delay">
