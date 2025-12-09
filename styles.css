@@ -884,8 +884,13 @@ footer p {
     z-index: 2;
 }
 
-.gallery-item img[style*="display: none"] ~ .gallery-placeholder {
+.gallery-item img[style*="display: none"] ~ .gallery-placeholder,
+.gallery-item:not(:has(img[src])) .gallery-placeholder {
     display: flex;
+}
+
+.gallery-item img:not([style*="display: none"]) ~ .gallery-placeholder {
+    display: none;
 }
 
 .gallery-item:hover img {
