@@ -64,11 +64,11 @@ export function ChatWidget() {
   };
 
   return (
-    <>
+    <div className="fixed z-50" style={{ bottom: "24px", right: "24px" }}>
       <Button
         onClick={() => setIsOpen(!isOpen)}
-        className="fixed bottom-6 right-6 z-50 rounded-full shadow-lg"
-        size="lg"
+        className="rounded-full shadow-lg"
+        size="icon"
         data-testid="button-chat-toggle"
         style={{ 
           backgroundColor: "hsl(var(--accent))",
@@ -81,7 +81,8 @@ export function ChatWidget() {
 
       {isOpen && (
         <Card 
-          className="fixed bottom-24 right-6 z-50 w-[350px] sm:w-[400px] shadow-xl"
+          className="absolute w-[350px] sm:w-[400px] shadow-xl"
+          style={{ bottom: "72px", right: "0" }}
           data-testid="card-chat-widget"
         >
           <CardHeader className="pb-3 bg-accent/10 rounded-t-lg">
@@ -162,6 +163,6 @@ export function ChatWidget() {
           </CardContent>
         </Card>
       )}
-    </>
+    </div>
   );
 }
