@@ -9,7 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest, queryClient } from "@/lib/queryClient";
-import { ArrowLeft, Mail, Star, Image, Check, Trash2, LogOut, Eye, Upload, Plus } from "lucide-react";
+import { ArrowLeft, Mail, Star, Image, Check, Trash2, LogOut, Eye, Upload, Plus, Sparkles, Wand2, FileText } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import type { Contact, Testimonial, GalleryItem } from "@shared/schema";
@@ -245,7 +245,31 @@ function GalleryUploadForm({ onSuccess }: { onSuccess: () => void }) {
   const [description, setDescription] = useState("");
   const [file, setFile] = useState<File | null>(null);
   const [isUploading, setIsUploading] = useState(false);
+  const [isEnhancing, setIsEnhancing] = useState(false);
   const { toast } = useToast();
+
+  const handleEnhanceDescription = async () => {
+    if (!title || !category) {
+      toast({ title: "Missing fields", description: "Please enter a title and select a category first.", variant: "destructive" });
+      return;
+    }
+
+    setIsEnhancing(true);
+    try {
+      const response = await apiRequest("POST", "/api/enhance-description", {
+        title,
+        category,
+        existingDescription: description || undefined,
+      });
+      const data = await response.json();
+      setDescription(data.description);
+      toast({ title: "Description enhanced!", description: "AI has generated a professional description." });
+    } catch (error) {
+      toast({ title: "Enhancement failed", description: error instanceof Error ? error.message : "Something went wrong", variant: "destructive" });
+    } finally {
+      setIsEnhancing(false);
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -325,7 +349,20 @@ function GalleryUploadForm({ onSuccess }: { onSuccess: () => void }) {
             </div>
           </div>
           <div className="space-y-2">
-            <Label htmlFor="gallery-description">Description (optional)</Label>
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <Label htmlFor="gallery-description">Description (optional)</Label>
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={handleEnhanceDescription}
+                disabled={isEnhancing || !title || !category}
+                data-testid="button-enhance-description"
+              >
+                <Sparkles className="w-4 h-4 mr-1" />
+                {isEnhancing ? "Enhancing..." : "AI Enhance"}
+              </Button>
+            </div>
             <Textarea
               id="gallery-description"
               data-testid="input-gallery-description"
@@ -434,6 +471,110 @@ function GalleryTab() {
   );
 }
 
+function AIContentTab() {
+  const [contentType, setContentType] = useState("");
+  const [context, setContext] = useState("");
+  const [generatedContent, setGeneratedContent] = useState("");
+  const [isGenerating, setIsGenerating] = useState(false);
+  const { toast } = useToast();
+
+  const handleGenerate = async () => {
+    if (!contentType || !context) {
+      toast({ title: "Missing fields", description: "Please select a content type and provide context.", variant: "destructive" });
+      return;
+    }
+
+    setIsGenerating(true);
+    try {
+      const response = await apiRequest("POST", "/api/generate-content", {
+        contentType,
+        context,
+      });
+      const data = await response.json();
+      setGeneratedContent(data.content);
+      toast({ title: "Content generated!", description: "AI has created your content." });
+    } catch (error) {
+      toast({ title: "Generation failed", description: error instanceof Error ? error.message : "Something went wrong", variant: "destructive" });
+    } finally {
+      setIsGenerating(false);
+    }
+  };
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(generatedContent);
+    toast({ title: "Copied!", description: "Content copied to clipboard." });
+  };
+
+  return (
+    <div className="space-y-6">
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Wand2 className="w-5 h-5" />
+            AI Content Generator
+          </CardTitle>
+          <CardDescription>
+            Generate professional content for your business using AI
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="grid gap-4 sm:grid-cols-2">
+            <div className="space-y-2">
+              <Label htmlFor="content-type">Content Type</Label>
+              <Select value={contentType} onValueChange={setContentType}>
+                <SelectTrigger data-testid="select-content-type">
+                  <SelectValue placeholder="Select content type" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="project-description">Project Description</SelectItem>
+                  <SelectItem value="service-description">Service Description</SelectItem>
+                  <SelectItem value="testimonial-response">Testimonial Response</SelectItem>
+                  <SelectItem value="marketing-copy">Marketing Copy</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="context">Context / Details</Label>
+            <Textarea
+              id="context"
+              data-testid="input-content-context"
+              value={context}
+              onChange={(e) => setContext(e.target.value)}
+              placeholder="Provide details about what you want to generate. For example: 'A kitchen renovation in downtown, modern design with quartz countertops and stainless steel appliances'"
+              className="resize-none"
+              rows={3}
+            />
+          </div>
+          <Button
+            onClick={handleGenerate}
+            disabled={isGenerating || !contentType || !context}
+            data-testid="button-generate-content"
+          >
+            <Sparkles className="w-4 h-4 mr-2" />
+            {isGenerating ? "Generating..." : "Generate Content"}
+          </Button>
+
+          {generatedContent && (
+            <div className="mt-6 space-y-3">
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <Label>Generated Content</Label>
+                <Button variant="outline" size="sm" onClick={handleCopy} data-testid="button-copy-content">
+                  <FileText className="w-4 h-4 mr-1" />
+                  Copy
+                </Button>
+              </div>
+              <div className="p-4 bg-muted rounded-md">
+                <p className="text-sm whitespace-pre-wrap" data-testid="text-generated-content">{generatedContent}</p>
+              </div>
+            </div>
+          )}
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
+
 function Dashboard({ onLogout }: { onLogout: () => void }) {
   const { toast } = useToast();
 
@@ -492,6 +633,10 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
               <Image className="w-4 h-4 mr-2" />
               Gallery
             </TabsTrigger>
+            <TabsTrigger value="ai-content" data-testid="tab-ai-content">
+              <Wand2 className="w-4 h-4 mr-2" />
+              AI Content
+            </TabsTrigger>
           </TabsList>
 
           <TabsContent value="contacts">
@@ -504,6 +649,10 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
 
           <TabsContent value="gallery">
             <GalleryTab />
+          </TabsContent>
+
+          <TabsContent value="ai-content">
+            <AIContentTab />
           </TabsContent>
         </Tabs>
       </main>
