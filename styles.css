@@ -1149,4 +1149,42 @@ footer p {
         padding: 18px 35px;
         font-size: 1.1rem;
     }
+
+    .footer-content {
+        gap: 16px;
+    }
+
+    .footer-links {
+        gap: 8px;
+    }
+
+    .footer-links a {
+        font-size: 0.85rem;
+    }
+
+    .legal-hero {
+        padding: 60px 0 40px;
+    }
+
+    .legal-hero h2 {
+        font-size: 1.875rem;
+    }
+
+    .legal-content {
+        padding: 50px 0;
+    }
+
+    .legal-text h3 {
+        font-size: 1.35rem;
+        margin-top: 28px;
+    }
+
+    .legal-text p,
+    .legal-text li {
+        font-size: 0.95rem;
+    }
+
+    .contact-info-legal {
+        padding: 18px 20px;
+    }
 }
