@@ -396,6 +396,32 @@ header {
     line-height: 1.8;
     font-size: 1rem;
     font-weight: 400;
+    margin-bottom: 16px;
+}
+
+.service-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    text-align: left;
+}
+
+.service-list li {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    line-height: 1.8;
+    padding: 6px 0;
+    padding-left: 24px;
+    position: relative;
+}
+
+.service-list li::before {
+    content: '•';
+    color: var(--accent-orange);
+    font-weight: bold;
+    position: absolute;
+    left: 8px;
+    font-size: 1.2rem;
 }
 
 .service-accent {
