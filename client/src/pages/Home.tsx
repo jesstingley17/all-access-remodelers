@@ -2,7 +2,7 @@ import { Link } from "wouter";
 import { Navigation } from "@/components/Navigation";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
-import { Building2, Home as HomeIcon, Sparkles, Phone, Mail, ArrowRight, Loader2 } from "lucide-react";
+import { Building2, Home as HomeIcon, Sparkles, Phone, Mail, ArrowRight, Loader2, Star, Quote } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -11,8 +11,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { insertContactSchema, type InsertContact } from "@shared/schema";
-import { useMutation } from "@tanstack/react-query";
+import { insertContactSchema, type InsertContact, type Testimonial } from "@shared/schema";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 
@@ -57,6 +57,10 @@ const serviceOptions = [
 
 export default function Home() {
   const { toast } = useToast();
+
+  const { data: testimonials = [], isLoading: isLoadingTestimonials } = useQuery<Testimonial[]>({
+    queryKey: ["/api/testimonials"],
+  });
   
   const form = useForm<InsertContact>({
     resolver: zodResolver(insertContactSchema),
@@ -182,7 +186,70 @@ export default function Home() {
           </div>
         </section>
 
-        <section id="contact" className="py-28 bg-white relative" data-testid="section-contact">
+        <section id="testimonials" className="py-28 bg-white relative" data-testid="section-testimonials">
+          <div className="max-w-[1200px] mx-auto px-5">
+            <div className="text-center mb-16">
+              <span className="inline-block text-[0.8rem] font-semibold text-[#C89B3C] uppercase tracking-[3px] mb-4 opacity-90">
+                Testimonials
+              </span>
+              <h2 className="text-[2.75rem] text-[#111418] font-semibold tracking-[-0.5px] leading-[1.2] mb-4">
+                What Our Clients Say
+              </h2>
+              <p className="text-[1.15rem] text-[#4a4a4a] max-w-[580px] mx-auto leading-[1.7]">
+                Hear from homeowners who have trusted us with their projects
+              </p>
+            </div>
+            {isLoadingTestimonials ? (
+              <div className="flex justify-center py-12">
+                <Loader2 className="w-8 h-8 animate-spin text-[#C89B3C]" />
+              </div>
+            ) : testimonials.length === 0 ? (
+              <p className="text-center text-[#4a4a4a]">No testimonials yet.</p>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {testimonials.map((testimonial) => (
+                  <Card
+                    key={testimonial.id}
+                    className="bg-white p-8 rounded-xl shadow-sm border border-[#111418]/8 relative group hover:-translate-y-1 hover:shadow-lg transition-all duration-300"
+                    data-testid={`card-testimonial-${testimonial.id}`}
+                  >
+                    <Quote className="absolute top-6 right-6 w-10 h-10 text-[#C89B3C]/15" />
+                    <div className="flex gap-1 mb-4">
+                      {[...Array(5)].map((_, i) => (
+                        <Star
+                          key={i}
+                          className={`w-5 h-5 ${
+                            i < testimonial.rating
+                              ? "text-[#C89B3C] fill-[#C89B3C]"
+                              : "text-[#ddd]"
+                          }`}
+                        />
+                      ))}
+                    </div>
+                    <p className="text-[#4a4a4a] leading-[1.8] text-base mb-6 relative z-10">
+                      "{testimonial.text}"
+                    </p>
+                    <div className="border-t border-[#111418]/8 pt-5">
+                      <p className="font-semibold text-[#111418] text-lg" data-testid={`text-testimonial-name-${testimonial.id}`}>
+                        {testimonial.name}
+                      </p>
+                      {testimonial.location && (
+                        <p className="text-[#4a4a4a] text-sm">{testimonial.location}</p>
+                      )}
+                      {testimonial.service && (
+                        <p className="text-[#C89B3C] text-sm font-medium mt-1">
+                          {testimonial.service}
+                        </p>
+                      )}
+                    </div>
+                  </Card>
+                ))}
+              </div>
+            )}
+          </div>
+        </section>
+
+        <section id="contact" className="py-28 bg-[#fafafa] relative" data-testid="section-contact">
           <div className="max-w-[1200px] mx-auto px-5">
             <div className="text-center mb-16">
               <span className="inline-block text-[0.8rem] font-semibold text-[#C89B3C] uppercase tracking-[3px] mb-4 opacity-90">

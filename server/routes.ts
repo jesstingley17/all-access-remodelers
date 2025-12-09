@@ -1,7 +1,7 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { insertContactSchema } from "@shared/schema";
+import { insertContactSchema, insertTestimonialSchema } from "@shared/schema";
 
 export async function registerRoutes(
   httpServer: Server,
@@ -51,6 +51,64 @@ export async function registerRoutes(
     } catch (error) {
       console.error("Error updating contact:", error);
       res.status(500).json({ error: "Failed to update contact" });
+    }
+  });
+
+  // Get approved testimonials (public)
+  app.get("/api/testimonials", async (req, res) => {
+    try {
+      const testimonials = await storage.getApprovedTestimonials();
+      res.json(testimonials);
+    } catch (error) {
+      console.error("Error fetching testimonials:", error);
+      res.status(500).json({ error: "Failed to fetch testimonials" });
+    }
+  });
+
+  // Get all testimonials (for admin)
+  app.get("/api/testimonials/all", async (req, res) => {
+    try {
+      const testimonials = await storage.getAllTestimonials();
+      res.json(testimonials);
+    } catch (error) {
+      console.error("Error fetching testimonials:", error);
+      res.status(500).json({ error: "Failed to fetch testimonials" });
+    }
+  });
+
+  // Submit a testimonial
+  app.post("/api/testimonials", async (req, res) => {
+    try {
+      const result = insertTestimonialSchema.safeParse(req.body);
+      if (!result.success) {
+        return res.status(400).json({ error: "Invalid testimonial data", details: result.error.errors });
+      }
+      
+      const testimonial = await storage.createTestimonial(result.data);
+      res.status(201).json(testimonial);
+    } catch (error) {
+      console.error("Error creating testimonial:", error);
+      res.status(500).json({ error: "Failed to submit testimonial" });
+    }
+  });
+
+  // Approve a testimonial
+  app.patch("/api/testimonials/:id/approve", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      if (isNaN(id)) {
+        return res.status(400).json({ error: "Invalid testimonial ID" });
+      }
+      
+      const testimonial = await storage.approveTestimonial(id);
+      if (!testimonial) {
+        return res.status(404).json({ error: "Testimonial not found" });
+      }
+      
+      res.json(testimonial);
+    } catch (error) {
+      console.error("Error approving testimonial:", error);
+      res.status(500).json({ error: "Failed to approve testimonial" });
     }
   });
 
