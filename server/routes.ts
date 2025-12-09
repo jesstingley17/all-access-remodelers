@@ -7,6 +7,7 @@ import fs from "fs";
 import session from "express-session";
 import { storage } from "./storage";
 import { insertContactSchema, insertTestimonialSchema, insertGalleryItemSchema } from "@shared/schema";
+import { getChatCompletion, generateQuoteEstimate, generateContent, enhanceImageDescription, type ChatMessage } from "./openai";
 
 declare module "express-session" {
   interface SessionData {
@@ -290,6 +291,76 @@ export async function registerRoutes(
     } catch (error) {
       console.error("Error deleting gallery item:", error);
       res.status(500).json({ error: "Failed to delete gallery item" });
+    }
+  });
+
+  // AI Chatbot endpoint (public)
+  app.post("/api/chat", async (req, res) => {
+    try {
+      const { messages } = req.body;
+      if (!messages || !Array.isArray(messages)) {
+        return res.status(400).json({ error: "Messages array is required" });
+      }
+      
+      const response = await getChatCompletion(messages as ChatMessage[]);
+      res.json({ response });
+    } catch (error) {
+      console.error("Chat error:", error);
+      res.status(500).json({ error: "Failed to get AI response" });
+    }
+  });
+
+  // AI Quote Estimator endpoint (public)
+  app.post("/api/quote-estimate", async (req, res) => {
+    try {
+      const { serviceType, projectDescription, squareFootage, timeline, location } = req.body;
+      if (!serviceType || !projectDescription) {
+        return res.status(400).json({ error: "Service type and project description are required" });
+      }
+      
+      const estimate = await generateQuoteEstimate({
+        serviceType,
+        projectDescription,
+        squareFootage,
+        timeline,
+        location,
+      });
+      res.json({ estimate });
+    } catch (error) {
+      console.error("Quote estimate error:", error);
+      res.status(500).json({ error: "Failed to generate estimate" });
+    }
+  });
+
+  // AI Content Generator (admin only)
+  app.post("/api/generate-content", requireAdmin, async (req, res) => {
+    try {
+      const { contentType, context } = req.body;
+      if (!contentType || !context) {
+        return res.status(400).json({ error: "Content type and context are required" });
+      }
+      
+      const content = await generateContent(contentType, context);
+      res.json({ content });
+    } catch (error) {
+      console.error("Content generation error:", error);
+      res.status(500).json({ error: "Failed to generate content" });
+    }
+  });
+
+  // AI Image Description Enhancer (admin only)
+  app.post("/api/enhance-description", requireAdmin, async (req, res) => {
+    try {
+      const { title, category, existingDescription } = req.body;
+      if (!title || !category) {
+        return res.status(400).json({ error: "Title and category are required" });
+      }
+      
+      const description = await enhanceImageDescription(title, category, existingDescription);
+      res.json({ description });
+    } catch (error) {
+      console.error("Description enhancement error:", error);
+      res.status(500).json({ error: "Failed to enhance description" });
     }
   });
 

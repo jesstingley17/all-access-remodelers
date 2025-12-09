@@ -9,7 +9,9 @@ import Gallery from "@/pages/Gallery";
 import PrivacyPolicy from "@/pages/PrivacyPolicy";
 import TermsConditions from "@/pages/TermsConditions";
 import Admin from "@/pages/Admin";
+import QuoteEstimator from "@/pages/QuoteEstimator";
 import NotFound from "@/pages/not-found";
+import { ChatWidget } from "@/components/ChatWidget";
 
 function Router() {
   return (
@@ -20,6 +22,7 @@ function Router() {
       <Route path="/privacy-policy" component={PrivacyPolicy} />
       <Route path="/terms-conditions" component={TermsConditions} />
       <Route path="/admin" component={Admin} />
+      <Route path="/quote-estimator" component={QuoteEstimator} />
       <Route component={NotFound} />
     </Switch>
   );
@@ -31,6 +34,7 @@ function App() {
       <TooltipProvider>
         <Toaster />
         <Router />
+        <ChatWidget />
       </TooltipProvider>
     </QueryClientProvider>
   );
