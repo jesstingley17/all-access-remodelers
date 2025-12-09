@@ -562,11 +562,42 @@ footer {
     border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
+.footer-content {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+}
+
 footer p {
     opacity: 0.85;
     font-size: 0.9rem;
     font-weight: 400;
     letter-spacing: 0.5px;
+    margin: 0;
+}
+
+.footer-links {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.footer-links a {
+    color: rgba(255, 255, 255, 0.85);
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: color 0.3s ease;
+}
+
+.footer-links a:hover {
+    color: var(--accent-orange);
+}
+
+.footer-links span {
+    color: rgba(255, 255, 255, 0.5);
 }
 
 /* About Page Styles */
@@ -759,6 +790,103 @@ footer p {
 .cta-buttons .btn-secondary:hover {
     background-color: rgba(255, 255, 255, 0.2);
     border-color: rgba(255, 255, 255, 0.5);
+}
+
+/* Legal Pages Styles */
+.legal-hero {
+    padding: 100px 0 60px;
+    background: linear-gradient(135deg, var(--primary-blue) 0%, var(--blue-dark) 100%);
+    color: var(--white);
+    text-align: center;
+}
+
+.legal-hero h2 {
+    font-size: 2.75rem;
+    font-weight: 600;
+    letter-spacing: -0.5px;
+    margin-bottom: 12px;
+}
+
+.legal-date {
+    font-size: 1rem;
+    opacity: 0.85;
+    font-weight: 400;
+}
+
+.legal-content {
+    padding: 80px 0;
+    background-color: var(--white);
+}
+
+.legal-text {
+    max-width: 900px;
+    margin: 0 auto;
+    color: var(--text-primary);
+}
+
+.legal-text h3 {
+    font-size: 1.75rem;
+    color: var(--primary-blue);
+    margin-top: 40px;
+    margin-bottom: 16px;
+    font-weight: 600;
+    letter-spacing: -0.3px;
+}
+
+.legal-text h3:first-child {
+    margin-top: 0;
+}
+
+.legal-text p {
+    font-size: 1.05rem;
+    line-height: 1.9;
+    color: var(--text-secondary);
+    margin-bottom: 20px;
+}
+
+.legal-text ul {
+    margin: 20px 0;
+    padding-left: 30px;
+}
+
+.legal-text li {
+    font-size: 1.05rem;
+    line-height: 1.9;
+    color: var(--text-secondary);
+    margin-bottom: 12px;
+}
+
+.legal-text li strong {
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+.contact-info-legal {
+    background: var(--gray-bg);
+    padding: 24px 32px;
+    border-radius: 8px;
+    margin-top: 24px;
+    border-left: 3px solid var(--accent-orange);
+}
+
+.contact-info-legal p {
+    margin-bottom: 8px;
+}
+
+.contact-info-legal p:last-child {
+    margin-bottom: 0;
+}
+
+.contact-info-legal a {
+    color: var(--accent-orange);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.contact-info-legal a:hover {
+    color: var(--orange-dark);
+    text-decoration: underline;
 }
 
 /* Animations */
