@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gallery - All Access Remodelers</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="alternate icon" href="favicon.ico">
+    <link rel="apple-touch-icon" href="favicon.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <nav class="main-nav">
+            <div class="container">
+                <div class="nav-links">
+                    <a href="index.html" class="nav-link">Home</a>
+                    <a href="about.html" class="nav-link">About</a>
+                    <a href="gallery.html" class="nav-link active">Gallery</a>
+                </div>
+            </div>
+        </nav>
+        <div class="container">
+            <div class="logo-container">
+                <a href="index.html" class="logo-link">
+                    <svg class="logo" viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+                        <polygon points="200,50 120,100 200,100" fill="#1a3a5c"/>
+                        <polygon points="200,50 200,100 280,100" fill="#4a4a4a"/>
+                        <rect x="120" y="100" width="160" height="120" fill="#4a4a4a"/>
+                        <rect x="120" y="100" width="60" height="120" fill="#1a3a5c"/>
+                        <rect x="120" y="180" width="20" height="40" fill="#ff6b35"/>
+                        <polygon points="180,120 200,110 220,120 220,140 200,150 180,140" fill="#4a4a4a"/>
+                        <rect x="190" y="125" width="20" height="20" fill="#ff6b35"/>
+                        <line x1="200" y1="125" x2="200" y2="145" stroke="#1a3a5c" stroke-width="1.5"/>
+                        <line x1="190" y1="135" x2="210" y2="135" stroke="#1a3a5c" stroke-width="1.5"/>
+                        <rect x="220" y="140" width="60" height="20" fill="#4a4a4a"/>
+                        <rect x="270" y="145" width="20" height="10" fill="#4a4a4a"/>
+                        <rect x="280" y="80" width="8" height="140" fill="#1a3a5c"/>
+                        <path d="M 288 220 L 320 240 L 320 260 L 288 240 Z" fill="#ff6b35"/>
+                        <path d="M 288 230 L 315 245 L 315 265 L 288 245 Z" fill="#ff6b35"/>
+                        <path d="M 288 240 L 310 250 L 310 270 L 288 250 Z" fill="#ff6b35"/>
+                    </svg>
+                </a>
+                <h1 class="company-name">ALL ACCESS REMODELERS</h1>
+                <p class="tagline">CONSTRUCTION | PROPERTY MANAGEMENT | CLEANING</p>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="gallery-hero">
+            <div class="container">
+                <div class="section-header">
+                    <span class="section-label">Portfolio</span>
+                    <h2>Our Work Gallery</h2>
+                    <p class="section-description">Showcasing our quality craftsmanship and attention to detail</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="gallery-section">
+            <div class="container">
+                <div class="gallery-filters">
+                    <button class="filter-btn active" data-filter="all">All Projects</button>
+                    <button class="filter-btn" data-filter="construction">Construction</button>
+                    <button class="filter-btn" data-filter="renovation">Renovation</button>
+                    <button class="filter-btn" data-filter="interior">Interior</button>
+                    <button class="filter-btn" data-filter="kitchen">Kitchen</button>
+                    <button class="filter-btn" data-filter="bathroom">Bathroom</button>
+                </div>
+                <div class="gallery-grid-full">
+                    <!-- Kitchen Projects -->
+                    <div class="gallery-item" data-category="kitchen renovation">
+                        <img src="images/gallery/kitchen-01.jpg" alt="Modern kitchen renovation" onerror="this.style.display='none'">
+                        <div class="gallery-overlay">
+                            <h4>Modern Kitchen Renovation</h4>
+                            <p>Complete kitchen remodel with granite countertops</p>
+                        </div>
+                    </div>
+                    <div class="gallery-item" data-category="kitchen renovation">
+                        <img src="images/gallery/kitchen-02.jpg" alt="Kitchen island installation" onerror="this.style.display='none'">
+                        <div class="gallery-overlay">
+                            <h4>Kitchen Island Installation</h4>
+                            <p>Custom island with modern fixtures</p>
+                        </div>
+                    </div>
+                    <div class="gallery-item" data-category="kitchen renovation">
+                        <img src="images/gallery/kitchen-03.jpg" alt="Kitchen cabinets" onerror="this.style.display='none'">
+                        <div class="gallery-overlay">
+                            <h4>Kitchen Cabinetry</h4>
+                            <p>White shaker-style cabinets</p>
+                        </div>
+                    </div>
+
+                    <!-- Bathroom Projects -->
+                    <div class="gallery-item" data-category="bathroom renovation">
+                        <img src="images/gallery/bathroom-01.jpg" alt="Bathroom tile installation" onerror="this.style.display='none'">
+                        <div class="gallery-overlay">
+                            <h4>Bathroom Tile Installation</h4>
+                            <p>Luxury vinyl and ceramic tile work</p>
+                        </div>
+                    </div>
+                    <div class="gallery-item" data-category="bathroom renovation">
+                        <img src="images/gallery/bathroom-02.jpg" alt="Bathroom renovation" onerror="this.style.display='none'">
+                        <div class="gallery-overlay">
+                            <h4>Complete Bathroom Remodel</h4>
+                            <p>From demolition to completion</p>
+                        </div>
+                    </div>
+
+                    <!-- Living Room Projects -->
+                    <div class="gallery-item" data-category="interior renovation">
+                        <img src="images/gallery/living-01.jpg" alt="Living room renovation" onerror="this.style.display='none'">
+                        <div class="gallery-overlay">
+                            <h4>Living Room Renovation</h4>
+                            <p>Spacious modern living space</p>
+                        </div>
+                    </div>
+                    <div class="gallery-item" data-category="interior renovation">
+                        <img src="images/gallery/living-02.jpg" alt="Modern living room" onerror="this.style.display='none'">
+                        <div class="gallery-overlay">
+                            <h4>Modern Living Room</h4>
+                            <p>Open concept design</p>
+                        </div>
+                    </div>
+                    <div class="gallery-item" data-category="interior renovation">
+                        <img src="images/gallery/living-03.jpg" alt="Renovated living space" onerror="this.style.display='none'">
+                        <div class="gallery-overlay">
+                            <h4>Renovated Living Space</h4>
+                            <p>High ceilings and natural light</p>
+                        </div>
+                    </div>
+
+                    <!-- Flooring Projects -->
+                    <div class="gallery-item" data-category="renovation construction">
+                        <img src="images/gallery/floor-01.jpg" alt="Parquet floor installation" onerror="this.style.display='none'">
+                        <div class="gallery-overlay">
+                            <h4>Parquet Floor Installation</h4>
+                            <p>Basketweave pattern hardwood</p>
+                        </div>
+                    </div>
+                    <div class="gallery-item" data-category="renovation construction">
+                        <img src="images/gallery/floor-02.jpg" alt="Floor sanding and finishing" onerror="this.style.display='none'">
+                        <div class="gallery-overlay">
+                            <h4>Floor Sanding & Finishing</h4>
+                            <p>Professional floor restoration</p>
+                        </div>
+                    </div>
+                    <div class="gallery-item" data-category="renovation construction">
+                        <img src="images/gallery/floor-03.jpg" alt="Hardwood floor installation" onerror="this.style.display='none'">
+                        <div class="gallery-overlay">
+                            <h4>Hardwood Floor Installation</h4>
+                            <p>Natural wood finish</p>
+                        </div>
+                    </div>
+                    <div class="gallery-item" data-category="renovation construction">
+                        <img src="images/gallery/floor-04.jpg" alt="Marble look flooring" onerror="this.style.display='none'">
+                        <div class="gallery-overlay">
+                            <h4>Marble Look Flooring</h4>
+                            <p>Luxury vinyl installation</p>
+                        </div>
+                    </div>
+
+                    <!-- Construction Projects -->
+                    <div class="gallery-item" data-category="construction">
+                        <img src="images/gallery/construction-01.jpg" alt="Wall framing" onerror="this.style.display='none'">
+                        <div class="gallery-overlay">
+                            <h4>Wall Framing</h4>
+                            <p>Precision framing work</p>
+                        </div>
+                    </div>
+                    <div class="gallery-item" data-category="construction">
+                        <img src="images/gallery/construction-02.jpg" alt="Drywall installation" onerror="this.style.display='none'">
+                        <div class="gallery-overlay">
+                            <h4>Drywall Installation</h4>
+                            <p>Professional drywall work</p>
+                        </div>
+                    </div>
+                    <div class="gallery-item" data-category="construction">
+                        <img src="images/gallery/construction-03.jpg" alt="Insulation installation" onerror="this.style.display='none'">
+                        <div class="gallery-overlay">
+                            <h4>Insulation Installation</h4>
+                            <p>Energy-efficient insulation</p>
+                        </div>
+                    </div>
+                    <div class="gallery-item" data-category="construction">
+                        <img src="images/gallery/construction-04.jpg" alt="Electrical work" onerror="this.style.display='none'">
+                        <div class="gallery-overlay">
+                            <h4>Electrical Work</h4>
+                            <p>Professional electrical installation</p>
+                        </div>
+                    </div>
+
+                    <!-- Interior Projects -->
+                    <div class="gallery-item" data-category="interior renovation">
+                        <img src="images/gallery/interior-01.jpg" alt="Empty renovated room" onerror="this.style.display='none'">
+                        <div class="gallery-overlay">
+                            <h4>Renovated Room</h4>
+                            <p>Ready for furnishing</p>
+                        </div>
+                    </div>
+                    <div class="gallery-item" data-category="interior renovation">
+                        <img src="images/gallery/interior-02.jpg" alt="Modern interior" onerror="this.style.display='none'">
+                        <div class="gallery-overlay">
+                            <h4>Modern Interior</h4>
+                            <p>Clean and contemporary design</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="contact-cta">
+            <div class="container">
+                <div class="cta-content">
+                    <h2>Ready to Start Your Project?</h2>
+                    <p>Contact us today to discuss your renovation or construction needs.</p>
+                    <div class="cta-buttons">
+                        <a href="index.html#contact" class="btn btn-primary">Get Started</a>
+                        <a href="index.html#services" class="btn btn-secondary">Our Services</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <p>&copy; 2024 All Access Remodelers. All rights reserved.</p>
+                <div class="footer-links">
+                    <a href="privacy-policy.html">Privacy Policy</a>
+                    <span>|</span>
+                    <a href="terms-conditions.html">Terms & Conditions</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Gallery filter functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const filterButtons = document.querySelectorAll('.filter-btn');
+            const galleryItems = document.querySelectorAll('.gallery-item');
+
+            filterButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // Remove active class from all buttons
+                    filterButtons.forEach(btn => btn.classList.remove('active'));
+                    // Add active class to clicked button
+                    this.classList.add('active');
+
+                    const filter = this.getAttribute('data-filter');
+
+                    galleryItems.forEach(item => {
+                        if (filter === 'all' || item.getAttribute('data-category').includes(filter)) {
+                            item.style.display = 'block';
+                            setTimeout(() => {
+                                item.style.opacity = '1';
+                                item.style.transform = 'scale(1)';
+                            }, 10);
+                        } else {
+                            item.style.opacity = '0';
+                            item.style.transform = 'scale(0.8)';
+                            setTimeout(() => {
+                                item.style.display = 'none';
+                            }, 300);
+                        }
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html>
+
