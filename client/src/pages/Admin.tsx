@@ -9,7 +9,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest, queryClient } from "@/lib/queryClient";
-import { ArrowLeft, Mail, Star, Image, Check, Trash2, LogOut, Eye } from "lucide-react";
+import { ArrowLeft, Mail, Star, Image, Check, Trash2, LogOut, Eye, Upload, Plus } from "lucide-react";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
 import type { Contact, Testimonial, GalleryItem } from "@shared/schema";
 
 function LoginForm({ onLogin }: { onLogin: () => void }) {
@@ -237,6 +239,130 @@ function TestimonialsTab() {
   );
 }
 
+function GalleryUploadForm({ onSuccess }: { onSuccess: () => void }) {
+  const [title, setTitle] = useState("");
+  const [category, setCategory] = useState("");
+  const [description, setDescription] = useState("");
+  const [file, setFile] = useState<File | null>(null);
+  const [isUploading, setIsUploading] = useState(false);
+  const { toast } = useToast();
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!file || !title || !category) {
+      toast({ title: "Missing fields", description: "Please fill in title, category, and select an image.", variant: "destructive" });
+      return;
+    }
+
+    setIsUploading(true);
+    try {
+      const formData = new FormData();
+      formData.append("title", title);
+      formData.append("category", category);
+      if (description) formData.append("description", description);
+      formData.append("image", file);
+
+      const response = await fetch("/api/gallery", {
+        method: "POST",
+        body: formData,
+        credentials: "include",
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || "Upload failed");
+      }
+
+      toast({ title: "Success", description: "Photo added to gallery!" });
+      setTitle("");
+      setCategory("");
+      setDescription("");
+      setFile(null);
+      onSuccess();
+    } catch (error) {
+      toast({ title: "Upload failed", description: error instanceof Error ? error.message : "Something went wrong", variant: "destructive" });
+    } finally {
+      setIsUploading(false);
+    }
+  };
+
+  return (
+    <Card className="mb-6">
+      <CardHeader>
+        <CardTitle className="text-lg flex items-center gap-2">
+          <Plus className="w-5 h-5" />
+          Add New Photo
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div className="grid gap-4 sm:grid-cols-2">
+            <div className="space-y-2">
+              <Label htmlFor="gallery-title">Title</Label>
+              <Input
+                id="gallery-title"
+                data-testid="input-gallery-title"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                placeholder="e.g., Kitchen Remodel"
+                required
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="gallery-category">Category</Label>
+              <Select value={category} onValueChange={setCategory}>
+                <SelectTrigger data-testid="select-gallery-category">
+                  <SelectValue placeholder="Select category" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="construction">Construction</SelectItem>
+                  <SelectItem value="property-management">Property Management</SelectItem>
+                  <SelectItem value="cleaning">Cleaning</SelectItem>
+                  <SelectItem value="renovation">Renovation</SelectItem>
+                  <SelectItem value="other">Other</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="gallery-description">Description (optional)</Label>
+            <Textarea
+              id="gallery-description"
+              data-testid="input-gallery-description"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              placeholder="Brief description of the project..."
+              className="resize-none"
+              rows={2}
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="gallery-image">Image</Label>
+            <div className="flex flex-wrap items-center gap-4">
+              <Input
+                id="gallery-image"
+                data-testid="input-gallery-image"
+                type="file"
+                accept="image/jpeg,image/jpg,image/png,image/gif,image/webp"
+                onChange={(e) => setFile(e.target.files?.[0] || null)}
+                className="max-w-xs"
+                required
+              />
+              {file && (
+                <span className="text-sm text-muted-foreground">{file.name}</span>
+              )}
+            </div>
+          </div>
+          <Button type="submit" disabled={isUploading} data-testid="button-upload-gallery">
+            <Upload className="w-4 h-4 mr-2" />
+            {isUploading ? "Uploading..." : "Upload Photo"}
+          </Button>
+        </form>
+      </CardContent>
+    </Card>
+  );
+}
+
 function GalleryTab() {
   const { data: items = [], isLoading } = useQuery<GalleryItem[]>({
     queryKey: ["/api/gallery"],
@@ -252,21 +378,23 @@ function GalleryTab() {
     },
   });
 
-  if (isLoading) {
-    return <div className="p-4 text-muted-foreground">Loading gallery...</div>;
-  }
-
-  if (items.length === 0) {
-    return (
-      <div className="p-8 text-center text-muted-foreground">
-        <Image className="w-12 h-12 mx-auto mb-4 opacity-50" />
-        <p>No gallery items yet.</p>
-      </div>
-    );
-  }
+  const handleUploadSuccess = () => {
+    queryClient.invalidateQueries({ queryKey: ["/api/gallery"] });
+  };
 
   return (
-    <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+    <div>
+      <GalleryUploadForm onSuccess={handleUploadSuccess} />
+      
+      {isLoading ? (
+        <div className="p-4 text-muted-foreground">Loading gallery...</div>
+      ) : items.length === 0 ? (
+        <div className="p-8 text-center text-muted-foreground">
+          <Image className="w-12 h-12 mx-auto mb-4 opacity-50" />
+          <p>No gallery items yet. Upload your first photo above!</p>
+        </div>
+      ) : (
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
       {items.map((item) => (
         <Card key={item.id}>
           <CardContent className="pt-4">
@@ -300,6 +428,8 @@ function GalleryTab() {
           </CardContent>
         </Card>
       ))}
+        </div>
+      )}
     </div>
   );
 }
