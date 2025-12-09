@@ -2,9 +2,19 @@ import { Link } from "wouter";
 import { Navigation } from "@/components/Navigation";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
-import { Building2, Home as HomeIcon, Sparkles, Phone, Mail, ArrowRight } from "lucide-react";
+import { Building2, Home as HomeIcon, Sparkles, Phone, Mail, ArrowRight, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { insertContactSchema, type InsertContact } from "@shared/schema";
+import { useMutation } from "@tanstack/react-query";
+import { apiRequest } from "@/lib/queryClient";
+import { useToast } from "@/hooks/use-toast";
 
 const services = [
   {
@@ -36,7 +46,54 @@ const galleryItems = [
   { title: "Interior Renovation", placeholder: "Interior Design" },
 ];
 
+const serviceOptions = [
+  "Residential Remodeling",
+  "Property Management",
+  "Cleaning Services",
+  "General Maintenance",
+  "Consultation",
+  "Other",
+];
+
 export default function Home() {
+  const { toast } = useToast();
+  
+  const form = useForm<InsertContact>({
+    resolver: zodResolver(insertContactSchema),
+    defaultValues: {
+      name: "",
+      email: "",
+      phone: "",
+      service: "",
+      message: "",
+    },
+  });
+
+  const contactMutation = useMutation({
+    mutationFn: async (data: InsertContact) => {
+      const response = await apiRequest("POST", "/api/contacts", data);
+      return response.json();
+    },
+    onSuccess: () => {
+      toast({
+        title: "Message Sent!",
+        description: "We'll get back to you as soon as possible.",
+      });
+      form.reset();
+    },
+    onError: () => {
+      toast({
+        title: "Error",
+        description: "Failed to send message. Please try again.",
+        variant: "destructive",
+      });
+    },
+  });
+
+  const onSubmit = (data: InsertContact) => {
+    contactMutation.mutate(data);
+  };
+
   return (
     <div className="min-h-screen flex flex-col bg-white">
       <Navigation />
@@ -138,44 +195,181 @@ export default function Home() {
                 We're here to help with all your property needs
               </p>
             </div>
-            <Card className="max-w-[700px] mx-auto bg-[#111418] p-16 rounded-2xl shadow-lg text-white text-center relative overflow-hidden border border-white/10" data-testid="card-contact">
-              <div className="absolute -top-1/2 -right-1/2 w-[200%] h-[200%] bg-[radial-gradient(circle,rgba(200,155,60,0.1)_0%,transparent_70%)] animate-spin-slow" />
-              <div className="relative z-10 flex flex-col gap-8 mb-8">
-                <div className="flex items-center justify-center gap-6">
-                  <Phone className="w-12 h-12 drop-shadow-lg text-[#C89B3C]" />
-                  <div className="text-left">
-                    <span className="block font-medium text-white/80 text-[0.95rem] uppercase tracking-[1px] mb-2">
-                      Phone Number
-                    </span>
-                    <a
-                      href="tel:+16146323495"
-                      className="text-[1.5rem] text-white font-semibold transition-all duration-300 block tracking-[0.3px] hover:text-[#C89B3C] hover:-translate-y-0.5"
-                      data-testid="link-phone"
+
+            <div className="grid lg:grid-cols-2 gap-12 max-w-[1000px] mx-auto">
+              <Card className="bg-white p-8 rounded-xl shadow-sm border border-[#111418]/8" data-testid="card-contact-form">
+                <h3 className="text-[1.5rem] text-[#111418] font-semibold mb-6">Send Us a Message</h3>
+                <Form {...form}>
+                  <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
+                    <FormField
+                      control={form.control}
+                      name="name"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-[#111418]">Name *</FormLabel>
+                          <FormControl>
+                            <Input 
+                              placeholder="Your name" 
+                              {...field} 
+                              data-testid="input-name"
+                              className="border-[#111418]/20 focus:border-[#C89B3C]"
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="email"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-[#111418]">Email *</FormLabel>
+                          <FormControl>
+                            <Input 
+                              type="email"
+                              placeholder="your@email.com" 
+                              {...field} 
+                              data-testid="input-email"
+                              className="border-[#111418]/20 focus:border-[#C89B3C]"
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="phone"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-[#111418]">Phone (Optional)</FormLabel>
+                          <FormControl>
+                            <Input 
+                              placeholder="(555) 123-4567" 
+                              {...field} 
+                              value={field.value ?? ""}
+                              data-testid="input-phone"
+                              className="border-[#111418]/20 focus:border-[#C89B3C]"
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="service"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-[#111418]">Service Needed *</FormLabel>
+                          <Select onValueChange={field.onChange} value={field.value}>
+                            <FormControl>
+                              <SelectTrigger 
+                                data-testid="select-service"
+                                className="border-[#111418]/20 focus:border-[#C89B3C]"
+                              >
+                                <SelectValue placeholder="Select a service" />
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent>
+                              {serviceOptions.map((service) => (
+                                <SelectItem key={service} value={service}>
+                                  {service}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="message"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-[#111418]">Message *</FormLabel>
+                          <FormControl>
+                            <Textarea 
+                              placeholder="Tell us about your project..."
+                              rows={4}
+                              {...field}
+                              data-testid="input-message"
+                              className="border-[#111418]/20 focus:border-[#C89B3C] resize-none"
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <Button
+                      type="submit"
+                      disabled={contactMutation.isPending}
+                      className="w-full bg-[#C89B3C] text-[#111418] py-3.5 text-base font-semibold rounded-lg shadow-[0_4px_16px_rgba(200,155,60,0.3)] border-[#C89B3C]"
+                      data-testid="button-submit-contact"
                     >
-                      +1 (614) 632-3495
-                    </a>
+                      {contactMutation.isPending ? (
+                        <>
+                          <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                          Sending...
+                        </>
+                      ) : (
+                        "Send Message"
+                      )}
+                    </Button>
+                  </form>
+                </Form>
+              </Card>
+
+              <Card className="bg-[#111418] p-8 rounded-xl shadow-lg text-white relative overflow-hidden border border-white/10" data-testid="card-contact-info">
+                <div className="absolute -top-1/2 -right-1/2 w-[200%] h-[200%] bg-[radial-gradient(circle,rgba(200,155,60,0.1)_0%,transparent_70%)] animate-spin-slow" />
+                <div className="relative z-10">
+                  <h3 className="text-[1.5rem] text-white font-semibold mb-8">Contact Information</h3>
+                  <div className="flex flex-col gap-8">
+                    <div className="flex items-center gap-5">
+                      <div className="w-14 h-14 rounded-full bg-[#C89B3C]/20 flex items-center justify-center">
+                        <Phone className="w-6 h-6 text-[#C89B3C]" />
+                      </div>
+                      <div>
+                        <span className="block font-medium text-white/70 text-sm uppercase tracking-[1px] mb-1">
+                          Phone Number
+                        </span>
+                        <a
+                          href="tel:+16146323495"
+                          className="text-lg text-white font-semibold transition-colors duration-300 hover:text-[#C89B3C]"
+                          data-testid="link-phone"
+                        >
+                          +1 (614) 632-3495
+                        </a>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-5">
+                      <div className="w-14 h-14 rounded-full bg-[#C89B3C]/20 flex items-center justify-center">
+                        <Mail className="w-6 h-6 text-[#C89B3C]" />
+                      </div>
+                      <div>
+                        <span className="block font-medium text-white/70 text-sm uppercase tracking-[1px] mb-1">
+                          Email Address
+                        </span>
+                        <a
+                          href="mailto:admin@allaccessremodelers.com"
+                          className="text-lg text-white font-semibold transition-colors duration-300 break-words hover:text-[#C89B3C]"
+                          data-testid="link-email"
+                        >
+                          admin@allaccessremodelers.com
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="mt-10 pt-8 border-t border-white/10">
+                    <p className="text-white/70 text-base leading-relaxed">
+                      Reach out to us for a free consultation! We'll respond within 24 hours to discuss your project.
+                    </p>
                   </div>
                 </div>
-                <div className="flex items-center justify-center gap-6">
-                  <Mail className="w-12 h-12 drop-shadow-lg text-[#C89B3C]" />
-                  <div className="text-left">
-                    <span className="block font-medium text-white/80 text-[0.95rem] uppercase tracking-[1px] mb-2">
-                      Email Address
-                    </span>
-                    <a
-                      href="mailto:admin@allaccessremodelers.com"
-                      className="text-[1.5rem] text-white font-semibold transition-all duration-300 block tracking-[0.3px] break-words hover:text-[#C89B3C] hover:-translate-y-0.5"
-                      data-testid="link-email"
-                    >
-                      admin@allaccessremodelers.com
-                    </a>
-                  </div>
-                </div>
-              </div>
-              <p className="relative z-10 mt-6 text-white/85 text-base font-normal">
-                Call or email us today for a free consultation!
-              </p>
-            </Card>
+              </Card>
+            </div>
           </div>
         </section>
 

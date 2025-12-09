@@ -3,6 +3,7 @@ import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { Card } from "@/components/ui/card";
 import { Target, Users, Award, Heart } from "lucide-react";
+import aliPhoto from "@assets/ali-photo.jpg";
 
 const values = [
   {
@@ -54,10 +55,20 @@ export default function About() {
           <div className="max-w-[1200px] mx-auto px-5">
             <div className="max-w-[800px] mx-auto">
               <Card className="bg-white p-12 rounded-xl shadow-sm border border-[#111418]/8" data-testid="card-story">
-                <h3 className="text-[2rem] text-[#111418] font-semibold tracking-[-0.3px] mb-6 text-center">
-                  Our Story
-                </h3>
-                <div className="text-[#4a4a4a] leading-[1.9] text-[1.05rem] space-y-6">
+                <div className="flex flex-col md:flex-row gap-8 items-start">
+                  <div className="flex-shrink-0 mx-auto md:mx-0">
+                    <img 
+                      src={aliPhoto} 
+                      alt="Ali - Founder of All Access Remodelers" 
+                      className="w-48 h-48 rounded-full object-cover shadow-lg border-4 border-[#C89B3C]/20"
+                      data-testid="img-ali-photo"
+                    />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-[2rem] text-[#111418] font-semibold tracking-[-0.3px] mb-6 text-center md:text-left">
+                      Our Story
+                    </h3>
+                    <div className="text-[#4a4a4a] leading-[1.9] text-[1.05rem] space-y-6">
                   <p>
                     Hi, my name is Ali. I grew up in a family of 7 siblings and worked alongside my father in construction since I was a child. The lessons he taught me about hard work, integrity, and quality craftsmanship have been the foundation of everything I do.
                   </p>
@@ -71,9 +82,11 @@ export default function About() {
                     Whether you need a complete home renovation, reliable property management, or thorough cleaning services, we're here to help. Thank you for considering All Access Remodelers for your property needs.
                   </p>
                 </div>
-                <div className="mt-8 text-right">
-                  <p className="text-[#111418] font-semibold text-lg">- Ali</p>
-                  <p className="text-[#6a6a6a] text-sm">Founder, All Access Remodelers</p>
+                    <div className="mt-8 text-right">
+                      <p className="text-[#111418] font-semibold text-lg">- Ali</p>
+                      <p className="text-[#6a6a6a] text-sm">Founder, All Access Remodelers</p>
+                    </div>
+                  </div>
                 </div>
               </Card>
             </div>
