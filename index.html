@@ -25,34 +25,39 @@
         <div class="container">
             <div class="logo-container">
                 <a href="index.html" class="logo-link">
-                    <svg class="logo" viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
-                    <!-- House roof -->
-                    <polygon points="200,50 120,100 280,100" fill="#1a3a5c"/>
+                <svg class="logo" viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+                    <!-- House roof - split: left dark blue, right dark gray -->
+                    <polygon points="200,50 120,100 200,100" fill="#1a3a5c"/>
+                    <polygon points="200,50 200,100 280,100" fill="#4a4a4a"/>
                     
                     <!-- House walls -->
                     <rect x="120" y="100" width="160" height="120" fill="#4a4a4a"/>
                     
-                    <!-- Key bow (left side of house) -->
-                    <rect x="120" y="100" width="60" height="120" fill="#ff6b35"/>
-                    <rect x="130" y="110" width="40" height="40" fill="#ff6b35"/>
+                    <!-- Key shaft (left wall) - dark blue -->
+                    <rect x="120" y="100" width="60" height="120" fill="#1a3a5c"/>
                     
-                    <!-- Key blade (center/right) -->
-                    <rect x="180" y="140" width="80" height="20" fill="#1a3a5c"/>
-                    <rect x="250" y="145" width="30" height="10" fill="#1a3a5c"/>
+                    <!-- Orange rectangle to left of key shaft -->
+                    <rect x="120" y="180" width="20" height="40" fill="#ff6b35"/>
                     
-                    <!-- Window in key bow -->
-                    <rect x="135" y="115" width="30" height="30" fill="#ff6b35"/>
-                    <line x1="150" y1="115" x2="150" y2="145" stroke="#1a3a5c" stroke-width="2"/>
-                    <line x1="135" y1="130" x2="165" y2="130" stroke="#1a3a5c" stroke-width="2"/>
+                    <!-- Key head - dark gray octagon with orange square window -->
+                    <polygon points="180,120 200,110 220,120 220,140 200,150 180,140" fill="#4a4a4a"/>
+                    <!-- Orange square window in key head -->
+                    <rect x="190" y="125" width="20" height="20" fill="#ff6b35"/>
+                    <line x1="200" y1="125" x2="200" y2="145" stroke="#1a3a5c" stroke-width="1.5"/>
+                    <line x1="190" y1="135" x2="210" y2="135" stroke="#1a3a5c" stroke-width="1.5"/>
                     
-                    <!-- Broom handle -->
+                    <!-- Key blade/teeth (center/right) - dark gray -->
+                    <rect x="220" y="140" width="60" height="20" fill="#4a4a4a"/>
+                    <rect x="270" y="145" width="20" height="10" fill="#4a4a4a"/>
+                    
+                    <!-- Broom handle - dark blue -->
                     <rect x="280" y="80" width="8" height="140" fill="#1a3a5c"/>
                     
-                    <!-- Broom bristles -->
+                    <!-- Broom bristles - orange -->
                     <path d="M 288 220 L 320 240 L 320 260 L 288 240 Z" fill="#ff6b35"/>
                     <path d="M 288 230 L 315 245 L 315 265 L 288 245 Z" fill="#ff6b35"/>
                     <path d="M 288 240 L 310 250 L 310 270 L 288 250 Z" fill="#ff6b35"/>
-                    </svg>
+                </svg>
                 </a>
                 <h1 class="company-name">ALL ACCESS REMODELERS</h1>
                 <p class="tagline">CONSTRUCTION | PROPERTY MANAGEMENT | CLEANING</p>
