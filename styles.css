@@ -725,9 +725,42 @@ footer p {
     font-weight: 400;
 }
 
-.about-details {
+.about-personal {
     padding: 100px 0;
     background-color: var(--white);
+}
+
+.personal-story {
+    max-width: 900px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.story-content h3 {
+    font-size: 2.25rem;
+    color: var(--primary-blue);
+    margin-bottom: 30px;
+    font-weight: 600;
+    letter-spacing: -0.5px;
+}
+
+.story-text {
+    font-size: 1.2rem;
+    line-height: 1.9;
+    color: var(--text-secondary);
+    margin-bottom: 24px;
+    text-align: left;
+}
+
+.story-text:first-of-type {
+    font-size: 1.3rem;
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+.about-details {
+    padding: 100px 0;
+    background-color: var(--gray-bg);
 }
 
 .details-content {
@@ -1235,9 +1268,22 @@ footer p {
     }
 
     .about-content,
+    .about-personal,
     .about-details,
     .contact-cta {
         padding: 80px 0;
+    }
+
+    .story-content h3 {
+        font-size: 1.9rem;
+    }
+
+    .story-text {
+        font-size: 1.1rem;
+    }
+
+    .story-text:first-of-type {
+        font-size: 1.15rem;
     }
 
     .about-grid {
@@ -1328,9 +1374,22 @@ footer p {
     }
 
     .about-content,
+    .about-personal,
     .about-details,
     .contact-cta {
         padding: 60px 0;
+    }
+
+    .story-content h3 {
+        font-size: 1.75rem;
+    }
+
+    .story-text {
+        font-size: 1rem;
+    }
+
+    .story-text:first-of-type {
+        font-size: 1.05rem;
     }
 
     .about-card {
