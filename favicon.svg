@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300">
+    <!-- House roof -->
+    <polygon points="200,50 120,100 280,100" fill="#1a3a5c"/>
+    
+    <!-- House walls -->
+    <rect x="120" y="100" width="160" height="120" fill="#4a4a4a"/>
+    
+    <!-- Key bow (left side of house) -->
+    <rect x="120" y="100" width="60" height="120" fill="#ff6b35"/>
+    <rect x="130" y="110" width="40" height="40" fill="#ff6b35"/>
+    
+    <!-- Key blade (center/right) -->
+    <rect x="180" y="140" width="80" height="20" fill="#1a3a5c"/>
+    <rect x="250" y="145" width="30" height="10" fill="#1a3a5c"/>
+    
+    <!-- Window in key bow -->
+    <rect x="135" y="115" width="30" height="30" fill="#ff6b35"/>
+    <line x1="150" y1="115" x2="150" y2="145" stroke="#1a3a5c" stroke-width="2"/>
+    <line x1="135" y1="130" x2="165" y2="130" stroke="#1a3a5c" stroke-width="2"/>
+    
+    <!-- Broom handle -->
+    <rect x="280" y="80" width="8" height="140" fill="#1a3a5c"/>
+    
+    <!-- Broom bristles -->
+    <path d="M 288 220 L 320 240 L 320 260 L 288 240 Z" fill="#ff6b35"/>
+    <path d="M 288 230 L 315 245 L 315 265 L 288 245 Z" fill="#ff6b35"/>
+    <path d="M 288 240 L 310 250 L 310 270 L 288 250 Z" fill="#ff6b35"/>
+</svg>
+
