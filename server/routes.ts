@@ -1,11 +1,19 @@
-import type { Express } from "express";
+import type { Express, Request, Response, NextFunction } from "express";
 import express from "express";
 import { createServer, type Server } from "http";
 import multer from "multer";
 import path from "path";
 import fs from "fs";
+import session from "express-session";
 import { storage } from "./storage";
 import { insertContactSchema, insertTestimonialSchema, insertGalleryItemSchema } from "@shared/schema";
+
+declare module "express-session" {
+  interface SessionData {
+    userId?: number;
+    isAdmin?: boolean;
+  }
+}
 
 // Ensure uploads directory exists
 const uploadsDir = path.join(process.cwd(), "uploads");
@@ -42,8 +50,76 @@ export async function registerRoutes(
   httpServer: Server,
   app: Express
 ): Promise<Server> {
+  // Session middleware
+  app.use(
+    session({
+      secret: process.env.SESSION_SECRET || "allaccessremodelers-secret-key",
+      resave: false,
+      saveUninitialized: false,
+      cookie: {
+        secure: false,
+        httpOnly: true,
+        maxAge: 24 * 60 * 60 * 1000,
+      },
+    })
+  );
+
   // Serve uploaded files with proper static middleware
   app.use("/uploads", express.static(uploadsDir));
+
+  // Auth routes
+  app.post("/api/auth/login", async (req, res) => {
+    try {
+      const { username, password } = req.body;
+      if (!username || !password) {
+        return res.status(400).json({ error: "Username and password required" });
+      }
+
+      const user = await storage.getUserByUsername(username);
+      if (!user || user.password !== password) {
+        return res.status(401).json({ error: "Invalid credentials" });
+      }
+
+      if (!user.isAdmin) {
+        return res.status(403).json({ error: "Access denied" });
+      }
+
+      req.session.userId = user.id;
+      req.session.isAdmin = user.isAdmin ?? false;
+
+      res.json({ success: true, user: { id: user.id, username: user.username, isAdmin: user.isAdmin } });
+    } catch (error) {
+      console.error("Login error:", error);
+      res.status(500).json({ error: "Login failed" });
+    }
+  });
+
+  app.post("/api/auth/logout", (req, res) => {
+    req.session.destroy((err) => {
+      if (err) {
+        return res.status(500).json({ error: "Logout failed" });
+      }
+      res.json({ success: true });
+    });
+  });
+
+  app.get("/api/auth/session", async (req, res) => {
+    if (req.session.userId && req.session.isAdmin) {
+      const user = await storage.getUser(req.session.userId);
+      if (user) {
+        return res.json({ isAuthenticated: true, user: { id: user.id, username: user.username, isAdmin: user.isAdmin } });
+      }
+    }
+    res.json({ isAuthenticated: false });
+  });
+
+  const requireAdmin = (req: Request, res: Response, next: NextFunction) => {
+    if (!req.session.userId || !req.session.isAdmin) {
+      return res.status(401).json({ error: "Unauthorized" });
+    }
+    next();
+  };
+
   // Contact form submission
   app.post("/api/contacts", async (req, res) => {
     try {
@@ -61,7 +137,7 @@ export async function registerRoutes(
   });
 
   // Get all contacts (for admin)
-  app.get("/api/contacts", async (req, res) => {
+  app.get("/api/contacts", requireAdmin, async (req, res) => {
     try {
       const contacts = await storage.getContacts();
       res.json(contacts);
@@ -72,7 +148,7 @@ export async function registerRoutes(
   });
 
   // Mark contact as read
-  app.patch("/api/contacts/:id/read", async (req, res) => {
+  app.patch("/api/contacts/:id/read", requireAdmin, async (req, res) => {
     try {
       const id = parseInt(req.params.id);
       if (isNaN(id)) {
@@ -103,7 +179,7 @@ export async function registerRoutes(
   });
 
   // Get all testimonials (for admin)
-  app.get("/api/testimonials/all", async (req, res) => {
+  app.get("/api/testimonials/all", requireAdmin, async (req, res) => {
     try {
       const testimonials = await storage.getAllTestimonials();
       res.json(testimonials);
@@ -130,7 +206,7 @@ export async function registerRoutes(
   });
 
   // Approve a testimonial
-  app.patch("/api/testimonials/:id/approve", async (req, res) => {
+  app.patch("/api/testimonials/:id/approve", requireAdmin, async (req, res) => {
     try {
       const id = parseInt(req.params.id);
       if (isNaN(id)) {
@@ -164,7 +240,7 @@ export async function registerRoutes(
   });
 
   // Upload gallery item with image
-  app.post("/api/gallery", upload.single("image"), async (req, res) => {
+  app.post("/api/gallery", requireAdmin, upload.single("image"), async (req, res) => {
     try {
       const file = req.file;
       
@@ -198,7 +274,7 @@ export async function registerRoutes(
   });
 
   // Delete gallery item
-  app.delete("/api/gallery/:id", async (req, res) => {
+  app.delete("/api/gallery/:id", requireAdmin, async (req, res) => {
     try {
       const id = parseInt(req.params.id);
       if (isNaN(id)) {

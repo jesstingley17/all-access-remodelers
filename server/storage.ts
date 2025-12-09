@@ -40,8 +40,19 @@ export class MemStorage implements IStorage {
     this.testimonialIdCounter = 1;
     this.galleryIdCounter = 1;
     
+    this.seedAdminUser();
     this.seedTestimonials();
     this.seedGalleryItems();
+  }
+
+  private seedAdminUser() {
+    const id = this.userIdCounter++;
+    this.users.set(id, {
+      id,
+      username: "admin",
+      password: "admin123",
+      isAdmin: true,
+    });
   }
 
   private seedTestimonials() {
