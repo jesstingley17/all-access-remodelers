@@ -60,10 +60,10 @@ export default function Gallery() {
                   variant={activeCategory === category ? "default" : "outline"}
                   onClick={() => setActiveCategory(category)}
                   className={cn(
-                    "px-6 py-2 text-sm font-medium rounded-lg transition-all duration-300",
+                    "px-6 py-2 text-sm font-medium rounded-lg",
                     activeCategory === category
-                      ? "bg-[#ff6b35] text-white border-[#ff6b35] hover:bg-[#e55a2b]"
-                      : "bg-white text-[#4a4a4a] border-[#1a3a5c]/20 hover:border-[#ff6b35] hover:text-[#ff6b35]"
+                      ? "bg-[#ff6b35] text-white border-[#ff6b35]"
+                      : "bg-white text-[#4a4a4a] border-[#1a3a5c]/20"
                   )}
                   data-testid={`button-filter-${category.toLowerCase().replace(' ', '-')}`}
                 >

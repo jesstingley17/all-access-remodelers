@@ -59,7 +59,7 @@ export default function Home() {
               <div className="flex gap-5 justify-center flex-wrap">
                 <Button
                   asChild
-                  className="bg-[#ff6b35] text-white px-8 py-3.5 text-base font-semibold rounded-lg shadow-[0_4px_16px_rgba(255,107,53,0.3)] hover:bg-[#e55a2b] hover:-translate-y-0.5 hover:shadow-[0_6px_24px_rgba(255,107,53,0.4)] transition-all duration-300 border-[#ff6b35]"
+                  className="bg-[#ff6b35] text-white px-8 py-3.5 text-base font-semibold rounded-lg shadow-[0_4px_16px_rgba(255,107,53,0.3)] border-[#ff6b35]"
                   data-testid="button-get-started"
                 >
                   <a href="#contact">Get Started</a>
@@ -67,7 +67,7 @@ export default function Home() {
                 <Button
                   asChild
                   variant="outline"
-                  className="bg-transparent text-white border-2 border-white/30 backdrop-blur-sm px-8 py-3.5 text-base font-semibold rounded-lg hover:bg-white/10 hover:border-white/50 hover:-translate-y-0.5 transition-all duration-300"
+                  className="bg-white/10 text-white border-2 border-white/30 backdrop-blur-sm px-8 py-3.5 text-base font-semibold rounded-lg"
                   data-testid="button-our-services"
                 >
                   <a href="#services">Our Services</a>
@@ -211,7 +211,7 @@ export default function Home() {
             <div className="text-center mt-12">
               <Button
                 asChild
-                className="bg-[#ff6b35] text-white px-8 py-3.5 text-base font-semibold rounded-lg shadow-[0_4px_16px_rgba(255,107,53,0.3)] hover:bg-[#e55a2b] hover:-translate-y-0.5 hover:shadow-[0_6px_24px_rgba(255,107,53,0.4)] transition-all duration-300 border-[#ff6b35]"
+                className="bg-[#ff6b35] text-white px-8 py-3.5 text-base font-semibold rounded-lg shadow-[0_4px_16px_rgba(255,107,53,0.3)] border-[#ff6b35]"
                 data-testid="button-view-gallery"
               >
                 <Link href="/gallery">View Full Gallery</Link>
