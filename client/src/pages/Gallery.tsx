@@ -1,29 +1,20 @@
 import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { Navigation } from "@/components/Navigation";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import type { GalleryItem } from "@shared/schema";
 
 const categories = ["All", "Kitchen", "Bathroom", "Living Room", "Flooring", "Exterior", "Commercial"];
 
-const galleryItems = [
-  { id: 1, title: "Modern Kitchen Renovation", category: "Kitchen", placeholder: "Kitchen Renovation" },
-  { id: 2, title: "Luxury Bathroom Remodel", category: "Bathroom", placeholder: "Bathroom Remodel" },
-  { id: 3, title: "Open Concept Living Room", category: "Living Room", placeholder: "Living Room" },
-  { id: 4, title: "Hardwood Floor Installation", category: "Flooring", placeholder: "Floor Installation" },
-  { id: 5, title: "Custom Kitchen Cabinets", category: "Kitchen", placeholder: "Custom Cabinets" },
-  { id: 6, title: "Master Bath Renovation", category: "Bathroom", placeholder: "Master Bath" },
-  { id: 7, title: "Laminate Flooring", category: "Flooring", placeholder: "Laminate Flooring" },
-  { id: 8, title: "Contemporary Living Space", category: "Living Room", placeholder: "Living Space" },
-  { id: 9, title: "Exterior Siding", category: "Exterior", placeholder: "Exterior Siding" },
-  { id: 10, title: "Commercial Office Renovation", category: "Commercial", placeholder: "Office Renovation" },
-  { id: 11, title: "Kitchen Island Installation", category: "Kitchen", placeholder: "Kitchen Island" },
-  { id: 12, title: "Tile Bathroom Floor", category: "Bathroom", placeholder: "Bathroom Tile" },
-];
-
 export default function Gallery() {
   const [activeCategory, setActiveCategory] = useState("All");
+
+  const { data: galleryItems = [], isLoading } = useQuery<GalleryItem[]>({
+    queryKey: ["/api/gallery"],
+  });
 
   const filteredItems = activeCategory === "All" 
     ? galleryItems 
@@ -72,25 +63,47 @@ export default function Gallery() {
               ))}
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-              {filteredItems.map((item) => (
-                <div
-                  key={item.id}
-                  className="relative rounded-lg overflow-hidden bg-[#2C2C2C] aspect-[4/3] group cursor-pointer shadow-sm transition-all duration-300 hover:shadow-lg hover:-translate-y-1"
-                  data-testid={`gallery-item-${item.id}`}
-                >
-                  <div className="absolute inset-0 flex items-center justify-center text-[#9a9a9a] font-medium text-lg">
-                    {item.placeholder}
+            {isLoading ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                {[1, 2, 3, 4, 5, 6].map((i) => (
+                  <div
+                    key={i}
+                    className="rounded-lg bg-[#e5e5e5] aspect-[4/3] animate-pulse"
+                  />
+                ))}
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                {filteredItems.map((item) => (
+                  <div
+                    key={item.id}
+                    className="relative rounded-lg overflow-hidden bg-[#2C2C2C] aspect-[4/3] group cursor-pointer shadow-sm transition-all duration-300 hover:shadow-lg hover:-translate-y-1"
+                    data-testid={`gallery-item-${item.id}`}
+                  >
+                    {item.imageUrl ? (
+                      <img
+                        src={item.imageUrl}
+                        alt={item.title}
+                        className="absolute inset-0 w-full h-full object-cover"
+                      />
+                    ) : (
+                      <div className="absolute inset-0 flex items-center justify-center text-[#9a9a9a] font-medium text-lg">
+                        {item.title}
+                      </div>
+                    )}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4">
+                      <h4 className="text-white font-semibold text-lg">{item.title}</h4>
+                      <span className="text-white/80 text-sm mt-1">{item.category}</span>
+                      {item.description && (
+                        <p className="text-white/70 text-xs mt-1 line-clamp-2">{item.description}</p>
+                      )}
+                    </div>
                   </div>
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4">
-                    <h4 className="text-white font-semibold text-lg">{item.title}</h4>
-                    <span className="text-white/80 text-sm mt-1">{item.category}</span>
-                  </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            )}
 
-            {filteredItems.length === 0 && (
+            {!isLoading && filteredItems.length === 0 && (
               <div className="text-center py-16">
                 <p className="text-[#6a6a6a] text-lg">No projects found in this category.</p>
               </div>

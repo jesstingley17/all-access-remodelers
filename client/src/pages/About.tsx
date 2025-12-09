@@ -70,7 +70,7 @@ export default function About() {
                     </h3>
                     <div className="text-[#4a4a4a] leading-[1.9] text-[1.05rem] space-y-6">
                   <p>
-                    Hi, my name is Ali. I grew up in a family of 7 siblings and worked alongside my father in construction since I was a child. The lessons he taught me about hard work, integrity, and quality craftsmanship have been the foundation of everything I do.
+                    Hey, my name's Ali and I've been passionate about real estate for as long as I can remember. As a kid, I was always building something - from making little bird houses out of twigs to constructing tree forts in the woods with my friends. I'm lucky enough to take my hunger and creativity to a professional level.
                   </p>
                   <p>
                     When I started All Access Remodelers, I wanted to build more than just a business. I wanted to create a company that treats every client like family, every project like it's our own home, and every promise like a sacred commitment.

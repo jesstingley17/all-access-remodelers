@@ -1,4 +1,4 @@
-import { type User, type InsertUser, type Contact, type InsertContact, type Testimonial, type InsertTestimonial } from "@shared/schema";
+import { type User, type InsertUser, type Contact, type InsertContact, type Testimonial, type InsertTestimonial, type GalleryItem, type InsertGalleryItem } from "@shared/schema";
 
 export interface IStorage {
   getUser(id: number): Promise<User | undefined>;
@@ -13,25 +13,35 @@ export interface IStorage {
   getApprovedTestimonials(): Promise<Testimonial[]>;
   getAllTestimonials(): Promise<Testimonial[]>;
   approveTestimonial(id: number): Promise<Testimonial | undefined>;
+  
+  createGalleryItem(item: InsertGalleryItem): Promise<GalleryItem>;
+  getGalleryItems(): Promise<GalleryItem[]>;
+  getGalleryItemsByCategory(category: string): Promise<GalleryItem[]>;
+  deleteGalleryItem(id: number): Promise<boolean>;
 }
 
 export class MemStorage implements IStorage {
   private users: Map<number, User>;
   private contacts: Map<number, Contact>;
   private testimonials: Map<number, Testimonial>;
+  private galleryItems: Map<number, GalleryItem>;
   private userIdCounter: number;
   private contactIdCounter: number;
   private testimonialIdCounter: number;
+  private galleryIdCounter: number;
 
   constructor() {
     this.users = new Map();
     this.contacts = new Map();
     this.testimonials = new Map();
+    this.galleryItems = new Map();
     this.userIdCounter = 1;
     this.contactIdCounter = 1;
     this.testimonialIdCounter = 1;
+    this.galleryIdCounter = 1;
     
     this.seedTestimonials();
+    this.seedGalleryItems();
   }
 
   private seedTestimonials() {
@@ -150,6 +160,55 @@ export class MemStorage implements IStorage {
       this.testimonials.set(id, testimonial);
     }
     return testimonial;
+  }
+
+  private seedGalleryItems() {
+    const sampleGalleryItems: InsertGalleryItem[] = [
+      { title: "Modern Kitchen Renovation", category: "Kitchen", imageUrl: "", description: "Complete kitchen remodel with custom cabinets" },
+      { title: "Luxury Bathroom Remodel", category: "Bathroom", imageUrl: "", description: "Master bathroom transformation" },
+      { title: "Open Concept Living Room", category: "Living Room", imageUrl: "", description: "Removed walls to create open floor plan" },
+      { title: "Hardwood Floor Installation", category: "Flooring", imageUrl: "", description: "Premium hardwood flooring throughout" },
+      { title: "Custom Kitchen Cabinets", category: "Kitchen", imageUrl: "", description: "Custom-built cabinetry" },
+      { title: "Master Bath Renovation", category: "Bathroom", imageUrl: "", description: "Spa-like master bathroom" },
+    ];
+
+    sampleGalleryItems.forEach((item) => {
+      const id = this.galleryIdCounter++;
+      this.galleryItems.set(id, {
+        ...item,
+        id,
+        description: item.description ?? null,
+        createdAt: new Date(),
+      });
+    });
+  }
+
+  async createGalleryItem(insertItem: InsertGalleryItem): Promise<GalleryItem> {
+    const id = this.galleryIdCounter++;
+    const item: GalleryItem = {
+      ...insertItem,
+      id,
+      description: insertItem.description ?? null,
+      createdAt: new Date(),
+    };
+    this.galleryItems.set(id, item);
+    return item;
+  }
+
+  async getGalleryItems(): Promise<GalleryItem[]> {
+    return Array.from(this.galleryItems.values()).sort(
+      (a, b) => (b.createdAt?.getTime() ?? 0) - (a.createdAt?.getTime() ?? 0)
+    );
+  }
+
+  async getGalleryItemsByCategory(category: string): Promise<GalleryItem[]> {
+    return Array.from(this.galleryItems.values())
+      .filter((item) => item.category === category)
+      .sort((a, b) => (b.createdAt?.getTime() ?? 0) - (a.createdAt?.getTime() ?? 0));
+  }
+
+  async deleteGalleryItem(id: number): Promise<boolean> {
+    return this.galleryItems.delete(id);
   }
 }
 
