@@ -26,6 +26,5 @@ dist
 
 # Misc
 attached_assets/client_portal_extract
-script
 uploads
 .DS_Store
