@@ -1,6 +1,38 @@
+# Dependencies
 node_modules
+
+# Build output
 dist
-.DS_Store
 server/public
+
+# Environment variables
+.env
+.env.local
+.env.development
+.env.production
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor directories
+.vscode
+.idea
+*.swp
+*.swo
+*~
+
+# Logs
+*.log
+npm-debug.log*
+
+# Replit-specific
+.replit
+.replit.nix
+.local
+
+# Misc
 vite.config.ts.*
 *.tar.gz
+uploads/*
+!uploads/.gitkeep

@@ -47,6 +47,7 @@ The schema currently includes a basic users table. The architecture supports eas
 ### Third-Party Services
 - **Database**: PostgreSQL (via DATABASE_URL environment variable)
 - **Session Store**: connect-pg-simple for PostgreSQL-backed sessions
+- **AI Service**: OpenAI API (requires OPENAI_API_KEY environment variable)
 
 ### Key Libraries
 - **UI Framework**: Radix UI primitives (accordion, dialog, dropdown, etc.)
@@ -55,5 +56,29 @@ The schema currently includes a basic users table. The architecture supports eas
 - **Icons**: Lucide React
 - **Carousel**: Embla Carousel
 
-### Development Tools
-- **Replit Plugins**: vite-plugin-runtime-error-modal, vite-plugin-cartographer, vite-plugin-dev-banner (development only)
+## Deployment
+
+### Vercel Deployment
+
+This project is configured for deployment on Vercel.
+
+#### Prerequisites
+- Vercel account
+- Environment variables configured in Vercel dashboard:
+  - `DATABASE_URL` - PostgreSQL connection string
+  - `OPENAI_API_KEY` - OpenAI API key
+  - `SESSION_SECRET` - Secret for session encryption
+
+#### Deploy Steps
+1. Install Vercel CLI: `npm i -g vercel`
+2. Login: `vercel login`
+3. Deploy: `vercel`
+4. Configure environment variables in Vercel dashboard
+5. Deploy to production: `vercel --prod`
+
+#### Environment Variables
+Set these in your Vercel project settings:
+- `DATABASE_URL` - PostgreSQL database connection string
+- `OPENAI_API_KEY` - Your OpenAI API key
+- `SESSION_SECRET` - Random string for session encryption
+- `NODE_ENV` - Set to "production"
