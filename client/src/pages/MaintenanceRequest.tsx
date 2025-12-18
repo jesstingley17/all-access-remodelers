@@ -1,9 +1,6 @@
 import { Navigation } from "@/components/Navigation";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
-import { EgyptianLayout } from "@/components/EgyptianColumn";
-import { EgyptianFrieze } from "@/components/EgyptianFrieze";
-import { SandAnimation } from "@/components/SandAnimation";
 import { Wrench, Loader2, Image as ImageIcon, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -138,8 +135,7 @@ export default function MaintenanceRequest() {
   };
 
   return (
-    <EgyptianLayout className="min-h-screen flex flex-col">
-      <EgyptianFrieze />
+    <div className="min-h-screen flex flex-col bg-[#f8f9fa]">
       <Header />
       <Navigation />
       <main className="flex-grow">
@@ -392,10 +388,8 @@ export default function MaintenanceRequest() {
           </div>
         </div>
       </main>
-      <SandAnimation />
-      <EgyptianFrieze />
       <Footer />
-    </EgyptianLayout>
+    </div>
   );
 }
 

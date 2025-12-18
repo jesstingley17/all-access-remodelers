@@ -2,9 +2,6 @@ import { Link } from "wouter";
 import { Navigation } from "@/components/Navigation";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
-import { EgyptianLayout } from "@/components/EgyptianColumn";
-import { EgyptianFrieze } from "@/components/EgyptianFrieze";
-import { SandAnimation } from "@/components/SandAnimation";
 import { Building2, Home as HomeIcon, Sparkles, Phone, Mail, ArrowRight, Loader2, Star, Quote } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -102,8 +99,7 @@ export default function Home() {
   };
 
   return (
-    <EgyptianLayout className="min-h-screen flex flex-col">
-      <EgyptianFrieze />
+    <div className="min-h-screen flex flex-col bg-white">
       <Navigation />
       <Header />
 
@@ -509,9 +505,7 @@ export default function Home() {
         </section>
       </main>
 
-      <SandAnimation />
-      <EgyptianFrieze />
       <Footer />
-    </EgyptianLayout>
+    </div>
   );
 }

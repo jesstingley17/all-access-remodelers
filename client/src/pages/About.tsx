@@ -1,9 +1,6 @@
 import { Navigation } from "@/components/Navigation";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
-import { EgyptianLayout } from "@/components/EgyptianColumn";
-import { EgyptianFrieze } from "@/components/EgyptianFrieze";
-import { SandAnimation } from "@/components/SandAnimation";
 import { Card } from "@/components/ui/card";
 import { Target, Users, Award, Heart } from "lucide-react";
 import aliPhoto from "@assets/ali-photo.jpg";
@@ -33,8 +30,7 @@ const values = [
 
 export default function About() {
   return (
-    <EgyptianLayout className="min-h-screen flex flex-col">
-      <EgyptianFrieze />
+    <div className="min-h-screen flex flex-col bg-white">
       <Navigation />
       <Header />
 
@@ -158,9 +154,7 @@ export default function About() {
         </section>
       </main>
 
-      <SandAnimation />
-      <EgyptianFrieze />
       <Footer />
-    </EgyptianLayout>
+    </div>
   );
 }
