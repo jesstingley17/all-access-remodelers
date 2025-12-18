@@ -1,6 +1,8 @@
 import { Navigation } from "@/components/Navigation";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+import { PillarLayout } from "@/components/Pillar";
+import { RomanFrieze } from "@/components/RomanFrieze";
 import { Card } from "@/components/ui/card";
 import { Target, Users, Award, Heart } from "lucide-react";
 import aliPhoto from "@assets/ali-photo.jpg";
@@ -30,7 +32,8 @@ const values = [
 
 export default function About() {
   return (
-    <div className="min-h-screen flex flex-col bg-white">
+    <PillarLayout className="min-h-screen flex flex-col bg-gradient-to-b from-[#f8f7f5] via-white to-[#f8f7f5]">
+      <RomanFrieze />
       <Navigation />
       <Header />
 
@@ -154,7 +157,8 @@ export default function About() {
         </section>
       </main>
 
+      <RomanFrieze />
       <Footer />
-    </div>
+    </PillarLayout>
   );
 }

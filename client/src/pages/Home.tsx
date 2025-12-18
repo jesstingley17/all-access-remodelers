@@ -2,6 +2,8 @@ import { Link } from "wouter";
 import { Navigation } from "@/components/Navigation";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+import { PillarLayout } from "@/components/Pillar";
+import { RomanFrieze } from "@/components/RomanFrieze";
 import { Building2, Home as HomeIcon, Sparkles, Phone, Mail, ArrowRight, Loader2, Star, Quote } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -99,7 +101,8 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-white">
+    <PillarLayout className="min-h-screen flex flex-col bg-gradient-to-b from-[#f8f7f5] via-white to-[#f8f7f5]">
+      <RomanFrieze />
       <Navigation />
       <Header />
 
@@ -505,7 +508,8 @@ export default function Home() {
         </section>
       </main>
 
+      <RomanFrieze />
       <Footer />
-    </div>
+    </PillarLayout>
   );
 }

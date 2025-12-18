@@ -3,6 +3,8 @@ import { useQuery } from "@tanstack/react-query";
 import { Navigation } from "@/components/Navigation";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+import { PillarLayout } from "@/components/Pillar";
+import { RomanFrieze } from "@/components/RomanFrieze";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import type { GalleryItem } from "@shared/schema";
@@ -21,7 +23,8 @@ export default function Gallery() {
     : galleryItems.filter(item => item.category === activeCategory);
 
   return (
-    <div className="min-h-screen flex flex-col bg-white">
+    <PillarLayout className="min-h-screen flex flex-col bg-gradient-to-b from-[#f8f7f5] via-white to-[#f8f7f5]">
+      <RomanFrieze />
       <Navigation />
       <Header />
 
@@ -130,7 +133,8 @@ export default function Gallery() {
         </section>
       </main>
 
+      <RomanFrieze />
       <Footer />
-    </div>
+    </PillarLayout>
   );
 }

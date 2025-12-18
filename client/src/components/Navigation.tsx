@@ -13,7 +13,7 @@ export function Navigation() {
   const [location] = useLocation();
 
   return (
-    <nav className="bg-white sticky top-0 z-50 border-b border-[#111418]/8 shadow-sm" data-testid="nav-main">
+    <nav className="bg-gradient-to-b from-white via-[#faf9f7] to-white sticky top-0 z-50 border-b-2 border-[#c89b3c]/30 shadow-lg" data-testid="nav-main">
       <div className="max-w-[1200px] mx-auto px-5 py-5">
         <div className="flex justify-center gap-10">
           {navLinks.map((link) => (

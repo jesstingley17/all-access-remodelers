@@ -2,15 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
-/* LIGHT MODE - Gold & Black Theme */
+/* ROMAN EMPIRE THEME - Marble & Gold */
 :root {
   --button-outline: rgba(0,0,0, .10);
   --badge-outline: rgba(0,0,0, .05);
   --opaque-button-border-intensity: -8;
   --elevate-1: rgba(0,0,0, .03);
   --elevate-2: rgba(0,0,0, .08);
-  --background: 45 15% 96%;
-  --foreground: 220 10% 10%;
+  --background: 35 20% 97%; /* Marble white */
+  --foreground: 25 15% 15%; /* Dark stone */
   --border: 45 10% 88%;
   --card: 45 20% 98%;
   --card-foreground: 220 10% 10%;
@@ -32,8 +32,8 @@
   --secondary-foreground: 45 20% 95%;
   --muted: 45 10% 94%;
   --muted-foreground: 220 5% 40%;
-  --accent: 42 60% 51%;
-  --accent-foreground: 220 10% 8%;
+  --accent: 35 55% 45%; /* Roman gold */
+  --accent-foreground: 25 15% 10%;
   --destructive: 0 72% 45%;
   --destructive-foreground: 0 0% 98%;
   --input: 45 15% 85%;
@@ -44,7 +44,7 @@
   --chart-4: 42 50% 60%;
   --chart-5: 42 70% 45%;
   --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  --font-serif: Georgia, serif;
+  --font-serif: 'Times New Roman', 'Times', 'Garamond', 'Baskerville', 'Palatino', Georgia, serif;
   --font-mono: Menlo, monospace;
   --radius: .5rem;
   --shadow-2xs: 0px 2px 0px 0px hsl(210 45% 18% / 0.00);
@@ -175,9 +175,21 @@
   }
 
   body {
-    @apply font-sans antialiased bg-background text-foreground;
+    @apply font-serif antialiased bg-background text-foreground;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    background-image: 
+      linear-gradient(90deg, rgba(232, 230, 227, 0.5) 50%, transparent 50%),
+      linear-gradient(rgba(232, 230, 227, 0.5) 50%, transparent 50%);
+    background-size: 20px 20px;
+    background-position: 0 0, 10px 10px;
+  }
+  
+  /* Roman-inspired headings */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-serif);
+    font-weight: 700;
+    letter-spacing: 0.05em;
   }
 }
 
