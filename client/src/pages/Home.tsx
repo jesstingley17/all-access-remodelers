@@ -2,7 +2,7 @@ import { Link } from "wouter";
 import { Navigation } from "@/components/Navigation";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
-import { Building2, Home as HomeIcon, Sparkles, Phone, Mail, ArrowRight, Loader2, Star, Quote } from "lucide-react";
+import { Building2, Home as HomeIcon, Sparkles, Phone, Mail, Loader2, Star, Quote } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -478,29 +478,6 @@ export default function Home() {
                 <Link href="/gallery">View Full Gallery</Link>
               </Button>
             </div>
-          </div>
-        </section>
-
-        <section className="py-28 bg-[#C89B3C] text-[#111418] text-center relative overflow-hidden" data-testid="section-client-portal">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_30%,rgba(255,255,255,0.12)_0%,transparent_60%)]" />
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_70%,rgba(255,255,255,0.08)_0%,transparent_60%)]" />
-          <div className="max-w-[1200px] mx-auto px-5 relative z-10">
-            <h2 className="text-[2.75rem] font-semibold tracking-[-0.5px] leading-[1.2] mb-5">
-              Client Portal
-            </h2>
-            <p className="text-[1.2rem] mb-11 opacity-90 max-w-[580px] mx-auto leading-[1.7]">
-              Access your account, view project updates, and manage your services.
-            </p>
-            <a
-              href="https://allaccessremodelers-portal.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center bg-[#111418] text-white px-10 py-4 text-[1.1rem] font-semibold rounded-lg transition-all duration-300 shadow-[0_4px_20px_rgba(0,0,0,0.3)] border-2 border-transparent tracking-[0.5px] hover:-translate-y-0.5 hover:shadow-[0_8px_32px_rgba(0,0,0,0.4)] hover:bg-[#1C1C1C] group"
-              data-testid="link-client-portal"
-            >
-              Access Client Portal
-              <ArrowRight className="ml-3 text-2xl transition-transform duration-300 group-hover:translate-x-2" />
-            </a>
           </div>
         </section>
       </main>
