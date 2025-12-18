@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { Navigation } from "@/components/Navigation";
-import { PillarLayout } from "@/components/Pillar";
-import { RomanFrieze } from "@/components/RomanFrieze";
+import { EgyptianLayout } from "@/components/EgyptianColumn";
+import { EgyptianFrieze } from "@/components/EgyptianFrieze";
+import { SandAnimation } from "@/components/SandAnimation";
 import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
@@ -74,8 +75,8 @@ export default function QuoteEstimator() {
   };
 
   return (
-    <PillarLayout className="min-h-screen flex flex-col bg-gradient-to-b from-[#f8f7f5] via-white to-[#f8f7f5]">
-      <RomanFrieze />
+    <EgyptianLayout className="min-h-screen flex flex-col">
+      <EgyptianFrieze />
       <Navigation />
       
       <main className="flex-1">
@@ -256,8 +257,9 @@ export default function QuoteEstimator() {
         </section>
       </main>
 
-      <RomanFrieze />
+      <SandAnimation />
+      <EgyptianFrieze />
       <Footer />
-    </PillarLayout>
+    </EgyptianLayout>
   );
 }

@@ -1,8 +1,9 @@
 import { Navigation } from "@/components/Navigation";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
-import { PillarLayout } from "@/components/Pillar";
-import { RomanFrieze } from "@/components/RomanFrieze";
+import { EgyptianLayout } from "@/components/EgyptianColumn";
+import { EgyptianFrieze } from "@/components/EgyptianFrieze";
+import { SandAnimation } from "@/components/SandAnimation";
 import { Wrench, Loader2, Image as ImageIcon, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -137,8 +138,8 @@ export default function MaintenanceRequest() {
   };
 
   return (
-    <PillarLayout className="min-h-screen flex flex-col bg-gradient-to-b from-[#f8f7f5] via-white to-[#f8f7f5]">
-      <RomanFrieze />
+    <EgyptianLayout className="min-h-screen flex flex-col">
+      <EgyptianFrieze />
       <Header />
       <Navigation />
       <main className="flex-grow">
@@ -391,9 +392,10 @@ export default function MaintenanceRequest() {
           </div>
         </div>
       </main>
-      <RomanFrieze />
+      <SandAnimation />
+      <EgyptianFrieze />
       <Footer />
-    </PillarLayout>
+    </EgyptianLayout>
   );
 }
 

@@ -69,10 +69,15 @@ export async function registerRoutes(
   // Serve uploaded files with proper static middleware
   app.use("/uploads", express.static(uploadsDir));
   
-  // Serve static assets - try dist/public/assets first (production), then client/public/assets (development)
-  const distAssetsDir = path.join(process.cwd(), "dist", "public", "assets");
+  // Serve static assets - handle both development and production
+  // In development, serve from client/public/assets
+  // In production, serve from dist/public/assets (after build)
   const devAssetsDir = path.join(process.cwd(), "client", "public", "assets");
-  const assetsDir = fs.existsSync(distAssetsDir) ? distAssetsDir : devAssetsDir;
+  const distAssetsDir = path.join(process.cwd(), "dist", "public", "assets");
+  const assetsDir = (process.env.NODE_ENV === "production" && fs.existsSync(distAssetsDir)) 
+    ? distAssetsDir 
+    : devAssetsDir;
+  
   if (fs.existsSync(assetsDir)) {
     app.use("/assets", express.static(assetsDir, {
       maxAge: "1y",
@@ -81,7 +86,7 @@ export async function registerRoutes(
     }));
     console.log(`Serving assets from: ${assetsDir}`);
   } else {
-    console.warn(`Assets directory not found at ${distAssetsDir} or ${devAssetsDir}`);
+    console.warn(`Assets directory not found at ${assetsDir}`);
   }
 
   // Auth routes
