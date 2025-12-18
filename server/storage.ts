@@ -186,12 +186,19 @@ export class MemStorage implements IStorage {
           .filter(dirent => dirent.isDirectory())
           .map(dirent => dirent.name);
 
+        console.log(`[Storage] Loading gallery items from: ${assetsDir}`);
+        console.log(`[Storage] Found categories: ${categories.join(", ")}`);
+
         for (const category of categories) {
           const categoryDir = path.join(assetsDir, category);
           const files = fs.readdirSync(categoryDir)
             .filter(file => /\.(jpeg|jpg|png|gif|webp)$/i.test(file));
 
+          console.log(`[Storage] Category "${category}": ${files.length} files`);
+
           for (const file of files) {
+            // Use the actual category and filename - express.static will handle URL encoding
+            // But we need to ensure the path matches what express.static expects
             const imagePath = `/assets/${category}/${file}`;
             
             // Clean up title
@@ -220,10 +227,14 @@ export class MemStorage implements IStorage {
             });
           }
         }
+
+        console.log(`[Storage] Loaded ${galleryItems.length} gallery items total`);
       } catch (error) {
         console.warn("Could not load gallery items from assets folder:", error);
         // Fall back to empty array if there's an error
       }
+    } else {
+      console.warn(`[Storage] Assets directory not found: ${assetsDir}`);
     }
 
     galleryItems.forEach((item) => {
@@ -235,6 +246,8 @@ export class MemStorage implements IStorage {
         createdAt: new Date(),
       });
     });
+
+    console.log(`[Storage] Seeded ${this.galleryItems.size} gallery items into storage`);
   }
 
   async createGalleryItem(insertItem: InsertGalleryItem): Promise<GalleryItem> {

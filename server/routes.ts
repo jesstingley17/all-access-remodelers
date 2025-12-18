@@ -86,12 +86,24 @@ export async function registerRoutes(
   }
   
   if (assetsDir) {
+    // Middleware to decode URL-encoded paths before serving static files
+    // This handles spaces in folder names like "Living Room"
+    app.use("/assets", (req, res, next) => {
+      // Decode the URL path to handle spaces and special characters
+      req.url = decodeURIComponent(req.url);
+      next();
+    });
+    
+    // Use express.static with proper options
     app.use("/assets", express.static(assetsDir, {
       maxAge: process.env.NODE_ENV === "production" ? "1y" : "0",
       etag: true,
       lastModified: true,
+      dotfiles: "allow",
+      index: false,
     }));
     console.log(`✓ Serving assets from: ${assetsDir}`);
+    console.log(`✓ Assets will be accessible at: /assets/[category]/[filename]`);
   } else {
     console.warn(`⚠ Assets directory not found. Checked: ${attachedAssetsDir}, ${clientAssetsDir}, ${distAssetsDir}`);
   }
@@ -261,6 +273,7 @@ export async function registerRoutes(
       const items = category
         ? await storage.getGalleryItemsByCategory(category)
         : await storage.getGalleryItems();
+      console.log(`[API] GET /api/gallery - Returning ${items.length} items${category ? ` (category: ${category})` : ""}`);
       res.json(items);
     } catch (error) {
       console.error("Error fetching gallery items:", error);
