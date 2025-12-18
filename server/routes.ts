@@ -6,8 +6,9 @@ import path from "path";
 import fs from "fs";
 import session from "express-session";
 import { storage } from "./storage";
-import { insertContactSchema, insertTestimonialSchema, insertGalleryItemSchema } from "@shared/schema";
+import { insertContactSchema, insertTestimonialSchema, insertGalleryItemSchema, insertMaintenanceRequestSchema } from "@shared/schema";
 import { getChatCompletion, generateQuoteEstimate, generateContent, enhanceImageDescription, type ChatMessage } from "./openai";
+import { Resend } from "resend";
 
 declare module "express-session" {
   interface SessionData {
@@ -361,6 +362,94 @@ export async function registerRoutes(
     } catch (error) {
       console.error("Description enhancement error:", error);
       res.status(500).json({ error: "Failed to enhance description" });
+    }
+  });
+
+  // Maintenance Request submission with email via Resend
+  app.post("/api/maintenance-requests", async (req, res) => {
+    try {
+      const result = insertMaintenanceRequestSchema.safeParse(req.body);
+      if (!result.success) {
+        return res.status(400).json({ error: "Invalid form data", details: result.error.errors });
+      }
+
+      const requestData = result.data;
+      const resendApiKey = process.env.RESEND_API_KEY;
+      
+      if (!resendApiKey) {
+        console.error("RESEND_API_KEY is not configured");
+        // Still return success to user, but log the error
+        return res.status(201).json({ 
+          success: true, 
+          message: "Maintenance request received. Email notification failed to send." 
+        });
+      }
+
+      const resend = new Resend(resendApiKey);
+      
+      // Email to admin/company
+      const adminEmailHtml = `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+          <h2 style="color: #111418;">New Maintenance Request</h2>
+          <div style="background-color: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0;">
+            <p><strong>Name:</strong> ${requestData.name}</p>
+            <p><strong>Email:</strong> ${requestData.email}</p>
+            ${requestData.phone ? `<p><strong>Phone:</strong> ${requestData.phone}</p>` : ''}
+            <p><strong>Property Address:</strong> ${requestData.propertyAddress}</p>
+            <p><strong>Issue Type:</strong> ${requestData.issueType}</p>
+            <p><strong>Urgency:</strong> ${requestData.urgency}</p>
+            ${requestData.preferredContactTime ? `<p><strong>Preferred Contact Time:</strong> ${requestData.preferredContactTime}</p>` : ''}
+          </div>
+          <div style="background-color: #fff; padding: 20px; border-left: 4px solid #C89B3C; margin: 20px 0;">
+            <h3 style="color: #111418; margin-top: 0;">Description:</h3>
+            <p style="white-space: pre-wrap;">${requestData.description}</p>
+          </div>
+        </div>
+      `;
+
+      // Email confirmation to customer
+      const customerEmailHtml = `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+          <h2 style="color: #111418;">Maintenance Request Received</h2>
+          <p>Thank you, ${requestData.name}, for submitting your maintenance request.</p>
+          <div style="background-color: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0;">
+            <p><strong>Request Details:</strong></p>
+            <p><strong>Property Address:</strong> ${requestData.propertyAddress}</p>
+            <p><strong>Issue Type:</strong> ${requestData.issueType}</p>
+            <p><strong>Urgency:</strong> ${requestData.urgency}</p>
+            <p><strong>Description:</strong> ${requestData.description}</p>
+          </div>
+          <p>We have received your request and will contact you soon to schedule the maintenance work.</p>
+          <p>If you have any questions, please contact us at admin@allaccessremodelers.com</p>
+          <p style="margin-top: 30px; color: #666; font-size: 14px;">Best regards,<br/>All Access Remodelers</p>
+        </div>
+      `;
+
+      // Send email to admin (you can change this to your desired admin email)
+      const adminEmail = process.env.ADMIN_EMAIL || "admin@allaccessremodelers.com";
+      
+      await resend.emails.send({
+        from: "All Access Remodelers <onboarding@resend.dev>", // Update this with your verified domain
+        to: adminEmail,
+        subject: `New Maintenance Request - ${requestData.issueType} (${requestData.urgency})`,
+        html: adminEmailHtml,
+      });
+
+      // Send confirmation email to customer
+      await resend.emails.send({
+        from: "All Access Remodelers <onboarding@resend.dev>", // Update this with your verified domain
+        to: requestData.email,
+        subject: "Maintenance Request Received - All Access Remodelers",
+        html: customerEmailHtml,
+      });
+
+      res.status(201).json({ 
+        success: true, 
+        message: "Maintenance request submitted successfully. You will receive a confirmation email shortly." 
+      });
+    } catch (error) {
+      console.error("Maintenance request error:", error);
+      res.status(500).json({ error: "Failed to submit maintenance request. Please try again." });
     }
   });
 

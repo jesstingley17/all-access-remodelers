@@ -86,3 +86,40 @@ export const insertGalleryItemSchema = createInsertSchema(galleryItems).pick({
 
 export type InsertGalleryItem = z.infer<typeof insertGalleryItemSchema>;
 export type GalleryItem = typeof galleryItems.$inferSelect;
+
+export const maintenanceRequests = pgTable("maintenance_requests", {
+  id: serial("id").primaryKey(),
+  name: text("name").notNull(),
+  email: text("email").notNull(),
+  phone: text("phone"),
+  propertyAddress: text("property_address").notNull(),
+  issueType: text("issue_type").notNull(),
+  description: text("description").notNull(),
+  urgency: text("urgency").notNull(),
+  preferredContactTime: text("preferred_contact_time"),
+  createdAt: timestamp("created_at").defaultNow(),
+  isRead: boolean("is_read").default(false),
+});
+
+export const insertMaintenanceRequestSchema = createInsertSchema(maintenanceRequests, {
+  name: z.string().min(1, "Name is required").max(100),
+  email: z.string().min(1, "Email is required").email("Please enter a valid email"),
+  phone: z.string().optional(),
+  propertyAddress: z.string().min(1, "Property address is required").max(200),
+  issueType: z.string().min(1, "Please select an issue type"),
+  description: z.string().min(1, "Description is required").max(2000),
+  urgency: z.string().min(1, "Please select urgency level"),
+  preferredContactTime: z.string().optional(),
+}).pick({
+  name: true,
+  email: true,
+  phone: true,
+  propertyAddress: true,
+  issueType: true,
+  description: true,
+  urgency: true,
+  preferredContactTime: true,
+});
+
+export type InsertMaintenanceRequest = z.infer<typeof insertMaintenanceRequestSchema>;
+export type MaintenanceRequest = typeof maintenanceRequests.$inferSelect;

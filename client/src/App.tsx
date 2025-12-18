@@ -10,6 +10,7 @@ import PrivacyPolicy from "@/pages/PrivacyPolicy";
 import TermsConditions from "@/pages/TermsConditions";
 import Admin from "@/pages/Admin";
 import QuoteEstimator from "@/pages/QuoteEstimator";
+import MaintenanceRequest from "@/pages/MaintenanceRequest";
 import NotFound from "@/pages/not-found";
 import { ChatWidget } from "@/components/ChatWidget";
 
@@ -23,6 +24,7 @@ function Router() {
       <Route path="/terms-conditions" component={TermsConditions} />
       <Route path="/admin" component={Admin} />
       <Route path="/quote-estimator" component={QuoteEstimator} />
+      <Route path="/maintenance-request" component={MaintenanceRequest} />
       <Route component={NotFound} />
     </Switch>
   );
