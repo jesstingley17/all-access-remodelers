@@ -7,7 +7,10 @@ import { storage } from "../server/storage";
  * Images are organized by category in subdirectories
  */
 async function importGalleryAssets() {
-  const assetsDir = path.join(process.cwd(), "client", "public", "assets");
+  // Check attached_assets/photos first, then fall back to client/public/assets
+  const attachedAssetsDir = path.join(process.cwd(), "attached_assets", "photos");
+  const clientAssetsDir = path.join(process.cwd(), "client", "public", "assets");
+  const assetsDir = fs.existsSync(attachedAssetsDir) ? attachedAssetsDir : clientAssetsDir;
   
   if (!fs.existsSync(assetsDir)) {
     console.error(`Assets directory not found: ${assetsDir}`);

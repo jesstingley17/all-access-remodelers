@@ -1,4 +1,6 @@
 import { type User, type InsertUser, type Contact, type InsertContact, type Testimonial, type InsertTestimonial, type GalleryItem, type InsertGalleryItem } from "@shared/schema";
+import fs from "fs";
+import path from "path";
 
 export interface IStorage {
   getUser(id: number): Promise<User | undefined>;
@@ -174,16 +176,57 @@ export class MemStorage implements IStorage {
   }
 
   private seedGalleryItems() {
-    const sampleGalleryItems: InsertGalleryItem[] = [
-      { title: "Modern Kitchen Renovation", category: "Kitchen", imageUrl: "", description: "Complete kitchen remodel with custom cabinets" },
-      { title: "Luxury Bathroom Remodel", category: "Bathroom", imageUrl: "", description: "Master bathroom transformation" },
-      { title: "Open Concept Living Room", category: "Living Room", imageUrl: "", description: "Removed walls to create open floor plan" },
-      { title: "Hardwood Floor Installation", category: "Flooring", imageUrl: "", description: "Premium hardwood flooring throughout" },
-      { title: "Custom Kitchen Cabinets", category: "Kitchen", imageUrl: "", description: "Custom-built cabinetry" },
-      { title: "Master Bath Renovation", category: "Bathroom", imageUrl: "", description: "Spa-like master bathroom" },
-    ];
+    // Load actual gallery items from attached_assets/photos folder
+    const assetsDir = path.join(process.cwd(), "attached_assets", "photos");
+    const galleryItems: InsertGalleryItem[] = [];
 
-    sampleGalleryItems.forEach((item) => {
+    if (fs.existsSync(assetsDir)) {
+      try {
+        const categories = fs.readdirSync(assetsDir, { withFileTypes: true })
+          .filter(dirent => dirent.isDirectory())
+          .map(dirent => dirent.name);
+
+        for (const category of categories) {
+          const categoryDir = path.join(assetsDir, category);
+          const files = fs.readdirSync(categoryDir)
+            .filter(file => /\.(jpeg|jpg|png|gif|webp)$/i.test(file));
+
+          for (const file of files) {
+            const imagePath = `/assets/${category}/${file}`;
+            
+            // Clean up title
+            let cleanTitle = file
+              .replace(/\.[^/.]+$/, "")
+              .replace(/^IMG[-_]?/i, "")
+              .replace(/_/g, " ")
+              .split(/(?=[A-Z])/)
+              .join(" ")
+              .toLowerCase()
+              .split(" ")
+              .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+              .join(" ");
+
+            if (cleanTitle.length < 3) {
+              cleanTitle = `${category} Project`;
+            } else {
+              cleanTitle = `${category} - ${cleanTitle}`;
+            }
+
+            galleryItems.push({
+              title: cleanTitle,
+              category: category,
+              description: null,
+              imageUrl: imagePath,
+            });
+          }
+        }
+      } catch (error) {
+        console.warn("Could not load gallery items from assets folder:", error);
+        // Fall back to empty array if there's an error
+      }
+    }
+
+    galleryItems.forEach((item) => {
       const id = this.galleryIdCounter++;
       this.galleryItems.set(id, {
         ...item,

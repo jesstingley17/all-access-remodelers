@@ -69,24 +69,31 @@ export async function registerRoutes(
   // Serve uploaded files with proper static middleware
   app.use("/uploads", express.static(uploadsDir));
   
-  // Serve static assets - handle both development and production
-  // In development, serve from client/public/assets
-  // In production, serve from dist/public/assets (after build)
-  const devAssetsDir = path.join(process.cwd(), "client", "public", "assets");
+  // Serve static assets from attached_assets/photos
+  // Also check client/public/assets as fallback
+  const attachedAssetsDir = path.join(process.cwd(), "attached_assets", "photos");
+  const clientAssetsDir = path.join(process.cwd(), "client", "public", "assets");
   const distAssetsDir = path.join(process.cwd(), "dist", "public", "assets");
-  const assetsDir = (process.env.NODE_ENV === "production" && fs.existsSync(distAssetsDir)) 
-    ? distAssetsDir 
-    : devAssetsDir;
   
-  if (fs.existsSync(assetsDir)) {
+  // Priority: attached_assets/photos > client/public/assets > dist/public/assets
+  let assetsDir: string | null = null;
+  if (fs.existsSync(attachedAssetsDir)) {
+    assetsDir = attachedAssetsDir;
+  } else if (fs.existsSync(clientAssetsDir)) {
+    assetsDir = clientAssetsDir;
+  } else if (process.env.NODE_ENV === "production" && fs.existsSync(distAssetsDir)) {
+    assetsDir = distAssetsDir;
+  }
+  
+  if (assetsDir) {
     app.use("/assets", express.static(assetsDir, {
-      maxAge: "1y",
+      maxAge: process.env.NODE_ENV === "production" ? "1y" : "0",
       etag: true,
       lastModified: true,
     }));
-    console.log(`Serving assets from: ${assetsDir}`);
+    console.log(`✓ Serving assets from: ${assetsDir}`);
   } else {
-    console.warn(`Assets directory not found at ${assetsDir}`);
+    console.warn(`⚠ Assets directory not found. Checked: ${attachedAssetsDir}, ${clientAssetsDir}, ${distAssetsDir}`);
   }
 
   // Auth routes
