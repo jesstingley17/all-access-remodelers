@@ -366,14 +366,31 @@ export async function registerRoutes(
   });
 
   // Maintenance Request submission with email via Resend
-  app.post("/api/maintenance-requests", async (req, res) => {
+  app.post("/api/maintenance-requests", upload.single("image"), async (req, res) => {
     try {
-      const result = insertMaintenanceRequestSchema.safeParse(req.body);
+      const formData = {
+        name: req.body.name,
+        email: req.body.email,
+        phone: req.body.phone,
+        propertyAddress: req.body.propertyAddress,
+        issueType: req.body.issueType,
+        description: req.body.description,
+        urgency: req.body.urgency,
+        preferredContactTime: req.body.preferredContactTime,
+      };
+
+      const result = insertMaintenanceRequestSchema.safeParse(formData);
       if (!result.success) {
+        // Clean up uploaded file if validation fails
+        if (req.file) {
+          fs.unlinkSync(req.file.path);
+        }
         return res.status(400).json({ error: "Invalid form data", details: result.error.errors });
       }
 
       const requestData = result.data;
+      const imageFile = req.file;
+      const imageUrl = imageFile ? `/uploads/${imageFile.filename}` : null;
       const resendApiKey = process.env.RESEND_API_KEY;
       
       if (!resendApiKey) {
@@ -387,6 +404,10 @@ export async function registerRoutes(
 
       const resend = new Resend(resendApiKey);
       
+      // Get base URL for image links (use environment variable or construct from request)
+      const baseUrl = process.env.SITE_URL || (req.protocol + "://" + req.get("host"));
+      const fullImageUrl = imageUrl ? `${baseUrl}${imageUrl}` : null;
+      
       // Email to admin/company
       const adminEmailHtml = `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
@@ -394,16 +415,23 @@ export async function registerRoutes(
           <div style="background-color: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0;">
             <p><strong>Name:</strong> ${requestData.name}</p>
             <p><strong>Email:</strong> ${requestData.email}</p>
-            ${requestData.phone ? `<p><strong>Phone:</strong> ${requestData.phone}</p>` : ''}
+            <p><strong>Phone:</strong> ${requestData.phone}</p>
             <p><strong>Property Address:</strong> ${requestData.propertyAddress}</p>
             <p><strong>Issue Type:</strong> ${requestData.issueType}</p>
             <p><strong>Urgency:</strong> ${requestData.urgency}</p>
-            ${requestData.preferredContactTime ? `<p><strong>Preferred Contact Time:</strong> ${requestData.preferredContactTime}</p>` : ''}
+            <p><strong>Preferred Contact Time:</strong> ${requestData.preferredContactTime}</p>
           </div>
           <div style="background-color: #fff; padding: 20px; border-left: 4px solid #C89B3C; margin: 20px 0;">
             <h3 style="color: #111418; margin-top: 0;">Description:</h3>
             <p style="white-space: pre-wrap;">${requestData.description}</p>
           </div>
+          ${fullImageUrl ? `
+          <div style="background-color: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0;">
+            <h3 style="color: #111418; margin-top: 0;">Attached Image:</h3>
+            <p><a href="${fullImageUrl}" style="color: #C89B3C; text-decoration: none;">View Image</a></p>
+            <img src="${fullImageUrl}" alt="Maintenance issue" style="max-width: 100%; height: auto; border-radius: 8px; margin-top: 10px;" />
+          </div>
+          ` : ''}
         </div>
       `;
 
@@ -428,12 +456,25 @@ export async function registerRoutes(
       // Send email to admin (you can change this to your desired admin email)
       const adminEmail = process.env.ADMIN_EMAIL || "admin@allaccessremodelers.com";
       
-      await resend.emails.send({
+      const emailOptions: any = {
         from: "All Access Remodelers <onboarding@resend.dev>", // Update this with your verified domain
         to: adminEmail,
         subject: `New Maintenance Request - ${requestData.issueType} (${requestData.urgency})`,
         html: adminEmailHtml,
-      });
+      };
+
+      // Attach image if available
+      if (imageFile) {
+        const imageBuffer = fs.readFileSync(imageFile.path);
+        emailOptions.attachments = [
+          {
+            filename: imageFile.originalname || `maintenance-image${path.extname(imageFile.filename)}`,
+            content: imageBuffer,
+          },
+        ];
+      }
+      
+      await resend.emails.send(emailOptions);
 
       // Send confirmation email to customer
       await resend.emails.send({

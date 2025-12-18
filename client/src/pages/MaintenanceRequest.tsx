@@ -1,7 +1,7 @@
 import { Navigation } from "@/components/Navigation";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
-import { Wrench, Loader2 } from "lucide-react";
+import { Wrench, Loader2, Image as ImageIcon, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -14,6 +14,7 @@ import { insertMaintenanceRequestSchema, type InsertMaintenanceRequest } from "@
 import { useMutation } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
+import { useState } from "react";
 
 const issueTypes = [
   "Plumbing",
@@ -45,6 +46,8 @@ const contactTimeOptions = [
 
 export default function MaintenanceRequest() {
   const { toast } = useToast();
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
 
   const form = useForm<InsertMaintenanceRequest>({
     resolver: zodResolver(insertMaintenanceRequestSchema),
@@ -60,9 +63,51 @@ export default function MaintenanceRequest() {
     },
   });
 
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setImageFile(file);
+      // Create preview URL
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const removeImage = () => {
+    setImageFile(null);
+    setImagePreview(null);
+    // Reset file input
+    const fileInput = document.getElementById("maintenance-image") as HTMLInputElement;
+    if (fileInput) fileInput.value = "";
+  };
+
   const maintenanceMutation = useMutation({
     mutationFn: async (data: InsertMaintenanceRequest) => {
-      const response = await apiRequest("POST", "/api/maintenance-requests", data);
+      const formData = new FormData();
+      formData.append("name", data.name);
+      formData.append("email", data.email);
+      if (data.phone) formData.append("phone", data.phone);
+      formData.append("propertyAddress", data.propertyAddress);
+      formData.append("issueType", data.issueType);
+      formData.append("description", data.description);
+      formData.append("urgency", data.urgency);
+      if (data.preferredContactTime) formData.append("preferredContactTime", data.preferredContactTime);
+      if (imageFile) formData.append("image", imageFile);
+
+      const response = await fetch("/api/maintenance-requests", {
+        method: "POST",
+        body: formData,
+        credentials: "include",
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || "Failed to submit request");
+      }
+
       return response.json();
     },
     onSuccess: () => {
@@ -71,11 +116,15 @@ export default function MaintenanceRequest() {
         description: "We've received your request and will contact you soon.",
       });
       form.reset();
+      setImageFile(null);
+      setImagePreview(null);
+      const fileInput = document.getElementById("maintenance-image") as HTMLInputElement;
+      if (fileInput) fileInput.value = "";
     },
-    onError: () => {
+    onError: (error) => {
       toast({
         title: "Error",
-        description: "Failed to submit maintenance request. Please try again.",
+        description: error instanceof Error ? error.message : "Failed to submit maintenance request. Please try again.",
         variant: "destructive",
       });
     },
@@ -154,12 +203,11 @@ export default function MaintenanceRequest() {
                         name="phone"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel className="text-[#111418]">Phone (Optional)</FormLabel>
+                            <FormLabel className="text-[#111418]">Phone *</FormLabel>
                             <FormControl>
                               <Input 
                                 placeholder="(555) 123-4567" 
                                 {...field} 
-                                value={field.value ?? ""}
                                 className="border-[#111418]/20 focus:border-[#C89B3C]"
                               />
                             </FormControl>
@@ -260,7 +308,7 @@ export default function MaintenanceRequest() {
                       name="preferredContactTime"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className="text-[#111418]">Preferred Contact Time (Optional)</FormLabel>
+                          <FormLabel className="text-[#111418]">Preferred Contact Time *</FormLabel>
                           <Select onValueChange={field.onChange} value={field.value}>
                             <FormControl>
                               <SelectTrigger className="border-[#111418]/20 focus:border-[#C89B3C]">
@@ -279,6 +327,45 @@ export default function MaintenanceRequest() {
                         </FormItem>
                       )}
                     />
+
+                    <div className="space-y-2">
+                      <FormLabel className="text-[#111418]">Upload Image (Optional)</FormLabel>
+                      <div className="space-y-3">
+                        <div className="flex items-center gap-4">
+                          <Input
+                            id="maintenance-image"
+                            type="file"
+                            accept="image/jpeg,image/jpg,image/png,image/gif,image/webp"
+                            onChange={handleImageChange}
+                            className="max-w-xs border-[#111418]/20 focus:border-[#C89B3C]"
+                          />
+                          {imageFile && (
+                            <Button
+                              type="button"
+                              variant="outline"
+                              size="sm"
+                              onClick={removeImage}
+                              className="text-red-600 hover:text-red-700"
+                            >
+                              <X className="w-4 h-4 mr-1" />
+                              Remove
+                            </Button>
+                          )}
+                        </div>
+                        {imagePreview && (
+                          <div className="relative inline-block">
+                            <img
+                              src={imagePreview}
+                              alt="Preview"
+                              className="max-w-full max-h-48 rounded-lg border border-[#111418]/20 object-contain"
+                            />
+                          </div>
+                        )}
+                        <p className="text-sm text-gray-500">
+                          Upload a photo of the maintenance issue to help us better understand the problem.
+                        </p>
+                      </div>
+                    </div>
 
                     <Button
                       type="submit"
