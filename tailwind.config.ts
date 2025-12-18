@@ -101,6 +101,10 @@ export default {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
       },
+      backgroundImage: {
+        'gold-gradient': 'linear-gradient(135deg, #d4a574 0%, #C89B3C 25%, #e8c47a 50%, #C89B3C 75%, #b88a2c 100%)',
+        'gold-shine': 'linear-gradient(135deg, rgba(255,255,255,0.3) 0%, transparent 50%, rgba(0,0,0,0.1) 100%)',
+      },
     },
   },
   plugins: [require("tailwindcss-animate"), require("@tailwindcss/typography")],

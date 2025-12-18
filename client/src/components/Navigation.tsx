@@ -24,8 +24,8 @@ export function Navigation() {
               className={cn(
                 "text-[#111418] font-medium text-[0.95rem] uppercase tracking-[1px] py-2 relative transition-colors duration-300",
                 location === link.href
-                  ? "text-[#C89B3C] after:content-[''] after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-[#C89B3C]"
-                  : "hover:text-[#C89B3C]"
+                  ? "gold-text after:content-[''] after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:gold-shine"
+                  : "hover:gold-text"
               )}
               data-testid={`nav-link-${link.label.toLowerCase()}`}
             >

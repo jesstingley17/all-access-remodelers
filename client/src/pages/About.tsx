@@ -38,7 +38,7 @@ export default function About() {
         <section className="py-24 pb-20 bg-gradient-to-br from-[#111418] to-[#1C1C1C] text-white text-center" data-testid="section-about-hero">
           <div className="max-w-[1200px] mx-auto px-5">
             <div className="text-center">
-              <span className="inline-block text-[0.8rem] font-semibold text-[#C89B3C] uppercase tracking-[3px] mb-4 opacity-90">
+              <span className="inline-block text-[0.8rem] font-semibold gold-text uppercase tracking-[3px] mb-4 opacity-90">
                 Who We Are
               </span>
               <h2 className="text-[2.75rem] text-white font-semibold tracking-[-0.5px] leading-[1.2] mb-4">
@@ -96,7 +96,7 @@ export default function About() {
         <section className="py-24 bg-white" data-testid="section-about-values">
           <div className="max-w-[1200px] mx-auto px-5">
             <div className="text-center mb-16">
-              <span className="inline-block text-[0.8rem] font-semibold text-[#C89B3C] uppercase tracking-[3px] mb-4 opacity-90">
+              <span className="inline-block text-[0.8rem] font-semibold gold-text uppercase tracking-[3px] mb-4 opacity-90">
                 What Drives Us
               </span>
               <h2 className="text-[2.75rem] text-[#111418] font-semibold tracking-[-0.5px] leading-[1.2] mb-4">
@@ -110,7 +110,7 @@ export default function About() {
                   className="bg-white p-10 rounded-xl shadow-sm text-center transition-all duration-400 relative overflow-visible border border-[#111418]/8 group hover:-translate-y-2 hover:shadow-lg hover:border-[#C89B3C]/20"
                   data-testid={`card-value-${index}`}
                 >
-                  <div className="absolute top-0 left-0 right-0 h-[3px] bg-[#C89B3C] transform scale-x-0 transition-transform duration-400 group-hover:scale-x-100 origin-left" />
+                  <div className="absolute top-0 left-0 right-0 h-[3px] gold-shine transform scale-x-0 transition-transform duration-400 group-hover:scale-x-100 origin-left" />
                   <div className="bg-[#fafafa] rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-6 transition-all duration-300 group-hover:scale-110">
                     <value.icon className="w-10 h-10 text-[#111418]" />
                   </div>
@@ -137,7 +137,7 @@ export default function About() {
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
               <a
                 href="tel:+16146323495"
-                className="inline-flex items-center bg-[#C89B3C] text-[#111418] px-8 py-4 text-[1rem] font-semibold rounded-lg transition-all duration-300 shadow-[0_4px_16px_rgba(200,155,60,0.3)] hover:-translate-y-0.5 hover:bg-[#b88c35]"
+                className="inline-flex items-center gold-shine text-[#111418] px-8 py-4 text-[1rem] font-semibold rounded-lg transition-all duration-300 hover:-translate-y-0.5 relative z-0"
                 data-testid="link-call-us"
               >
                 Call Us: +1 (614) 632-3495

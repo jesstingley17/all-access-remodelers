@@ -29,7 +29,7 @@ export default function Gallery() {
         <section className="py-24 pb-20 bg-gradient-to-br from-[#111418] to-[#1C1C1C] text-white text-center" data-testid="section-gallery-hero">
           <div className="max-w-[1200px] mx-auto px-5">
             <div className="text-center">
-              <span className="inline-block text-[0.8rem] font-semibold text-[#C89B3C] uppercase tracking-[3px] mb-4 opacity-90">
+              <span className="inline-block text-[0.8rem] font-semibold gold-text uppercase tracking-[3px] mb-4 opacity-90">
                 Our Portfolio
               </span>
               <h2 className="text-[2.75rem] text-white font-semibold tracking-[-0.5px] leading-[1.2] mb-4">
@@ -53,7 +53,7 @@ export default function Gallery() {
                   className={cn(
                     "px-6 py-2 text-sm font-medium rounded-lg",
                     activeCategory === category
-                      ? "bg-[#C89B3C] text-[#111418] border-[#C89B3C]"
+                      ? "gold-shine text-[#111418] border-[#C89B3C] relative z-0"
                       : "bg-white text-[#4a4a4a] border-[#111418]/20"
                   )}
                   data-testid={`button-filter-${category.toLowerCase().replace(' ', '-')}`}
@@ -111,7 +111,7 @@ export default function Gallery() {
           </div>
         </section>
 
-        <section className="py-24 bg-[#C89B3C] text-[#111418] text-center" data-testid="section-gallery-cta">
+        <section className="py-24 gold-bg text-[#111418] text-center relative" data-testid="section-gallery-cta">
           <div className="max-w-[1200px] mx-auto px-5">
             <h2 className="text-[2.5rem] font-semibold tracking-[-0.5px] leading-[1.2] mb-5">
               Ready to Start Your Project?

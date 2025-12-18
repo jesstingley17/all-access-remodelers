@@ -72,7 +72,7 @@ export default function Contact() {
         <section className="py-24 pb-20 bg-gradient-to-br from-[#111418] to-[#1C1C1C] text-white text-center" data-testid="section-contact-hero">
           <div className="max-w-[1200px] mx-auto px-5">
             <div className="text-center">
-              <span className="inline-block text-[0.8rem] font-semibold text-[#C89B3C] uppercase tracking-[3px] mb-4 opacity-90">
+              <span className="inline-block text-[0.8rem] font-semibold gold-text uppercase tracking-[3px] mb-4 opacity-90">
                 Get In Touch
               </span>
               <h2 className="text-[2.75rem] text-white font-semibold tracking-[-0.5px] leading-[1.2] mb-4">
@@ -103,7 +103,7 @@ export default function Contact() {
                               placeholder="Your name" 
                               {...field} 
                               data-testid="input-name"
-                              className="border-[#111418]/20 focus:border-[#C89B3C]"
+                              className="border-[#111418]/20 focus:border-[#C89B3C] focus:gold-border-shine"
                             />
                           </FormControl>
                           <FormMessage />
@@ -122,7 +122,7 @@ export default function Contact() {
                               placeholder="your@email.com" 
                               {...field} 
                               data-testid="input-email"
-                              className="border-[#111418]/20 focus:border-[#C89B3C]"
+                              className="border-[#111418]/20 focus:border-[#C89B3C] focus:gold-border-shine"
                             />
                           </FormControl>
                           <FormMessage />
@@ -141,7 +141,7 @@ export default function Contact() {
                               {...field} 
                               value={field.value ?? ""}
                               data-testid="input-phone"
-                              className="border-[#111418]/20 focus:border-[#C89B3C]"
+                              className="border-[#111418]/20 focus:border-[#C89B3C] focus:gold-border-shine"
                             />
                           </FormControl>
                           <FormMessage />
@@ -158,7 +158,7 @@ export default function Contact() {
                             <FormControl>
                               <SelectTrigger 
                                 data-testid="select-service"
-                                className="border-[#111418]/20 focus:border-[#C89B3C]"
+                                className="border-[#111418]/20 focus:border-[#C89B3C] focus:gold-border-shine"
                               >
                                 <SelectValue placeholder="Select a service" />
                               </SelectTrigger>
@@ -197,7 +197,7 @@ export default function Contact() {
                     <Button
                       type="submit"
                       disabled={contactMutation.isPending}
-                      className="w-full bg-[#C89B3C] text-[#111418] py-3.5 text-base font-semibold rounded-lg shadow-[0_4px_16px_rgba(200,155,60,0.3)] border-[#C89B3C]"
+                      className="w-full gold-shine text-[#111418] py-3.5 text-base font-semibold rounded-lg border-[#C89B3C] relative z-0"
                       data-testid="button-submit-contact"
                     >
                       {contactMutation.isPending ? (
@@ -220,29 +220,29 @@ export default function Contact() {
                   <div className="flex flex-col gap-8">
                     <div className="flex items-center gap-5">
                       <div className="w-14 h-14 rounded-full bg-[#C89B3C]/20 flex items-center justify-center">
-                        <Phone className="w-6 h-6 text-[#C89B3C]" />
+                        <Phone className="w-6 h-6 gold-text" />
                       </div>
                       <div>
                         <p className="text-white/70 text-sm mb-1">Phone</p>
-                        <a href="tel:+16146323495" className="text-white font-medium hover:text-[#C89B3C] transition-colors">
+                        <a href="tel:+16146323495" className="text-white font-medium hover:gold-text transition-colors">
                           +1 (614) 632-3495
                         </a>
                       </div>
                     </div>
                     <div className="flex items-center gap-5">
                       <div className="w-14 h-14 rounded-full bg-[#C89B3C]/20 flex items-center justify-center">
-                        <Mail className="w-6 h-6 text-[#C89B3C]" />
+                        <Mail className="w-6 h-6 gold-text" />
                       </div>
                       <div>
                         <p className="text-white/70 text-sm mb-1">Email</p>
-                        <a href="mailto:admin@allaccessremodelers.com" className="text-white font-medium hover:text-[#C89B3C] transition-colors">
+                        <a href="mailto:admin@allaccessremodelers.com" className="text-white font-medium hover:gold-text transition-colors">
                           admin@allaccessremodelers.com
                         </a>
                       </div>
                     </div>
                     <div className="flex items-center gap-5">
                       <div className="w-14 h-14 rounded-full bg-[#C89B3C]/20 flex items-center justify-center">
-                        <MapPin className="w-6 h-6 text-[#C89B3C]" />
+                        <MapPin className="w-6 h-6 gold-text" />
                       </div>
                       <div>
                         <p className="text-white/70 text-sm mb-1">Location</p>

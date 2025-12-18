@@ -120,7 +120,7 @@ export default function Home() {
               <div className="flex gap-5 justify-center flex-wrap">
                 <Button
                   asChild
-                  className="bg-[#C89B3C] text-[#111418] px-8 py-3.5 text-base font-semibold rounded-lg shadow-[0_4px_16px_rgba(200,155,60,0.3)] border-[#C89B3C]"
+                  className="gold-shine text-[#111418] px-8 py-3.5 text-base font-semibold rounded-lg border-[#C89B3C] relative z-0"
                   data-testid="button-get-started"
                 >
                   <a href="#contact">Get Started</a>
@@ -141,7 +141,7 @@ export default function Home() {
         <section id="services" className="py-28 bg-[#fafafa] relative" data-testid="section-services">
           <div className="max-w-[1200px] mx-auto px-5">
             <div className="text-center mb-16">
-              <span className="inline-block text-[0.8rem] font-semibold text-[#C89B3C] uppercase tracking-[3px] mb-4 opacity-90">
+              <span className="inline-block text-[0.8rem] font-semibold gold-text uppercase tracking-[3px] mb-4 opacity-90">
                 What We Offer
               </span>
               <h2 className="text-[2.75rem] text-[#111418] font-semibold tracking-[-0.5px] leading-[1.2] mb-4">
@@ -158,7 +158,7 @@ export default function Home() {
                   className="bg-white p-10 rounded-xl shadow-sm text-center transition-all duration-400 relative overflow-visible border border-[#111418]/8 group hover:-translate-y-2 hover:shadow-lg hover:border-[#C89B3C]/20"
                   data-testid={`card-service-${index}`}
                 >
-                  <div className="absolute top-0 left-0 right-0 h-[3px] bg-[#C89B3C] transform scale-x-0 transition-transform duration-400 group-hover:scale-x-100 origin-left" />
+                  <div className="absolute top-0 left-0 right-0 h-[3px] gold-shine transform scale-x-0 transition-transform duration-400 group-hover:scale-x-100 origin-left" />
                   <div className="relative w-full h-[200px] mb-6 rounded-lg overflow-hidden bg-[#fafafa] flex items-center justify-center">
                     <div className="bg-white/95 rounded-full w-20 h-20 flex items-center justify-center shadow-md transition-all duration-300 group-hover:scale-110">
                       <service.icon className="w-10 h-10 text-[#111418]" />
@@ -174,7 +174,7 @@ export default function Home() {
                     {service.items.map((item, itemIndex) => (
                       <li
                         key={itemIndex}
-                        className="text-[#4a4a4a] text-[0.95rem] leading-[1.8] py-1.5 pl-6 relative before:content-['•'] before:text-[#C89B3C] before:font-bold before:absolute before:left-2 before:text-[1.2rem]"
+                          className="text-[#4a4a4a] text-[0.95rem] leading-[1.8] py-1.5 pl-6 relative before:content-['•'] before:gold-text before:font-bold before:absolute before:left-2 before:text-[1.2rem]"
                       >
                         {item}
                       </li>
@@ -189,7 +189,7 @@ export default function Home() {
         <section id="testimonials" className="py-28 bg-white relative" data-testid="section-testimonials">
           <div className="max-w-[1200px] mx-auto px-5">
             <div className="text-center mb-16">
-              <span className="inline-block text-[0.8rem] font-semibold text-[#C89B3C] uppercase tracking-[3px] mb-4 opacity-90">
+              <span className="inline-block text-[0.8rem] font-semibold gold-text uppercase tracking-[3px] mb-4 opacity-90">
                 Testimonials
               </span>
               <h2 className="text-[2.75rem] text-[#111418] font-semibold tracking-[-0.5px] leading-[1.2] mb-4">
@@ -201,7 +201,7 @@ export default function Home() {
             </div>
             {isLoadingTestimonials ? (
               <div className="flex justify-center py-12">
-                <Loader2 className="w-8 h-8 animate-spin text-[#C89B3C]" />
+                        <Loader2 className="w-8 h-8 animate-spin gold-text" />
               </div>
             ) : testimonials.length === 0 ? (
               <p className="text-center text-[#4a4a4a]">No testimonials yet.</p>
@@ -237,7 +237,7 @@ export default function Home() {
                         <p className="text-[#4a4a4a] text-sm">{testimonial.location}</p>
                       )}
                       {testimonial.service && (
-                        <p className="text-[#C89B3C] text-sm font-medium mt-1">
+                        <p className="gold-text text-sm font-medium mt-1">
                           {testimonial.service}
                         </p>
                       )}
@@ -252,7 +252,7 @@ export default function Home() {
         <section id="contact" className="py-28 bg-[#fafafa] relative" data-testid="section-contact">
           <div className="max-w-[1200px] mx-auto px-5">
             <div className="text-center mb-16">
-              <span className="inline-block text-[0.8rem] font-semibold text-[#C89B3C] uppercase tracking-[3px] mb-4 opacity-90">
+              <span className="inline-block text-[0.8rem] font-semibold gold-text uppercase tracking-[3px] mb-4 opacity-90">
                 Contact Us
               </span>
               <h2 className="text-[2.75rem] text-[#111418] font-semibold tracking-[-0.5px] leading-[1.2] mb-4">
@@ -279,7 +279,7 @@ export default function Home() {
                               placeholder="Your name" 
                               {...field} 
                               data-testid="input-name"
-                              className="border-[#111418]/20 focus:border-[#C89B3C]"
+                              className="border-[#111418]/20 focus:border-[#C89B3C] focus:gold-border-shine"
                             />
                           </FormControl>
                           <FormMessage />
@@ -298,7 +298,7 @@ export default function Home() {
                               placeholder="your@email.com" 
                               {...field} 
                               data-testid="input-email"
-                              className="border-[#111418]/20 focus:border-[#C89B3C]"
+                              className="border-[#111418]/20 focus:border-[#C89B3C] focus:gold-border-shine"
                             />
                           </FormControl>
                           <FormMessage />
@@ -317,7 +317,7 @@ export default function Home() {
                               {...field} 
                               value={field.value ?? ""}
                               data-testid="input-phone"
-                              className="border-[#111418]/20 focus:border-[#C89B3C]"
+                              className="border-[#111418]/20 focus:border-[#C89B3C] focus:gold-border-shine"
                             />
                           </FormControl>
                           <FormMessage />
@@ -334,7 +334,7 @@ export default function Home() {
                             <FormControl>
                               <SelectTrigger 
                                 data-testid="select-service"
-                                className="border-[#111418]/20 focus:border-[#C89B3C]"
+                                className="border-[#111418]/20 focus:border-[#C89B3C] focus:gold-border-shine"
                               >
                                 <SelectValue placeholder="Select a service" />
                               </SelectTrigger>
@@ -373,7 +373,7 @@ export default function Home() {
                     <Button
                       type="submit"
                       disabled={contactMutation.isPending}
-                      className="w-full bg-[#C89B3C] text-[#111418] py-3.5 text-base font-semibold rounded-lg shadow-[0_4px_16px_rgba(200,155,60,0.3)] border-[#C89B3C]"
+                      className="w-full gold-shine text-[#111418] py-3.5 text-base font-semibold rounded-lg border-[#C89B3C] relative z-0"
                       data-testid="button-submit-contact"
                     >
                       {contactMutation.isPending ? (
@@ -396,7 +396,7 @@ export default function Home() {
                   <div className="flex flex-col gap-8">
                     <div className="flex items-center gap-5">
                       <div className="w-14 h-14 rounded-full bg-[#C89B3C]/20 flex items-center justify-center">
-                        <Phone className="w-6 h-6 text-[#C89B3C]" />
+                        <Phone className="w-6 h-6 gold-text" />
                       </div>
                       <div>
                         <span className="block font-medium text-white/70 text-sm uppercase tracking-[1px] mb-1">
@@ -404,7 +404,7 @@ export default function Home() {
                         </span>
                         <a
                           href="tel:+16146323495"
-                          className="text-lg text-white font-semibold transition-colors duration-300 hover:text-[#C89B3C]"
+                          className="text-lg text-white font-semibold transition-colors duration-300 hover:gold-text"
                           data-testid="link-phone"
                         >
                           +1 (614) 632-3495
@@ -413,7 +413,7 @@ export default function Home() {
                     </div>
                     <div className="flex items-center gap-5">
                       <div className="w-14 h-14 rounded-full bg-[#C89B3C]/20 flex items-center justify-center">
-                        <Mail className="w-6 h-6 text-[#C89B3C]" />
+                        <Mail className="w-6 h-6 gold-text" />
                       </div>
                       <div>
                         <span className="block font-medium text-white/70 text-sm uppercase tracking-[1px] mb-1">
@@ -443,7 +443,7 @@ export default function Home() {
         <section className="py-28 bg-[#fafafa]" data-testid="section-gallery-preview">
           <div className="max-w-[1200px] mx-auto px-5">
             <div className="text-center mb-16">
-              <span className="inline-block text-[0.8rem] font-semibold text-[#C89B3C] uppercase tracking-[3px] mb-4 opacity-90">
+              <span className="inline-block text-[0.8rem] font-semibold gold-text uppercase tracking-[3px] mb-4 opacity-90">
                 Our Work
               </span>
               <h2 className="text-[2.75rem] text-[#111418] font-semibold tracking-[-0.5px] leading-[1.2] mb-4">
@@ -472,7 +472,7 @@ export default function Home() {
             <div className="text-center mt-12">
               <Button
                 asChild
-                className="bg-[#C89B3C] text-[#111418] px-8 py-3.5 text-base font-semibold rounded-lg shadow-[0_4px_16px_rgba(200,155,60,0.3)] border-[#C89B3C]"
+                className="gold-shine text-[#111418] px-8 py-3.5 text-base font-semibold rounded-lg border-[#C89B3C] relative z-0"
                 data-testid="button-view-gallery"
               >
                 <Link href="/gallery">View Full Gallery</Link>

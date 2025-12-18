@@ -144,7 +144,7 @@ export default function MaintenanceRequest() {
             <div className="text-center mb-12">
               <div className="flex justify-center mb-6">
                 <div className="w-20 h-20 rounded-full bg-[#C89B3C]/20 flex items-center justify-center">
-                  <Wrench className="w-10 h-10 text-[#C89B3C]" />
+                  <Wrench className="w-10 h-10 gold-text" />
                 </div>
               </div>
               <h1 className="text-[2.5rem] md:text-[3rem] text-white font-bold mb-4">
@@ -170,7 +170,7 @@ export default function MaintenanceRequest() {
                               <Input 
                                 placeholder="Your name" 
                                 {...field} 
-                                className="border-[#111418]/20 focus:border-[#C89B3C]"
+                                className="border-[#111418]/20 focus:border-[#C89B3C] focus:gold-border-shine"
                               />
                             </FormControl>
                             <FormMessage />
@@ -188,7 +188,7 @@ export default function MaintenanceRequest() {
                                 type="email"
                                 placeholder="your@email.com" 
                                 {...field} 
-                                className="border-[#111418]/20 focus:border-[#C89B3C]"
+                                className="border-[#111418]/20 focus:border-[#C89B3C] focus:gold-border-shine"
                               />
                             </FormControl>
                             <FormMessage />
@@ -208,7 +208,7 @@ export default function MaintenanceRequest() {
                               <Input 
                                 placeholder="(555) 123-4567" 
                                 {...field} 
-                                className="border-[#111418]/20 focus:border-[#C89B3C]"
+                                className="border-[#111418]/20 focus:border-[#C89B3C] focus:gold-border-shine"
                               />
                             </FormControl>
                             <FormMessage />
@@ -370,7 +370,7 @@ export default function MaintenanceRequest() {
                     <Button
                       type="submit"
                       disabled={maintenanceMutation.isPending}
-                      className="w-full bg-[#C89B3C] text-[#111418] py-3.5 text-base font-semibold rounded-lg shadow-[0_4px_16px_rgba(200,155,60,0.3)] border-[#C89B3C] hover:bg-[#B88A2C]"
+                      className="w-full gold-shine text-[#111418] py-3.5 text-base font-semibold rounded-lg border-[#C89B3C] relative z-0 hover:opacity-90"
                     >
                       {maintenanceMutation.isPending ? (
                         <>

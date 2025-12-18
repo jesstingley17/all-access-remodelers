@@ -228,6 +228,163 @@
   animation: spinSlow 25s linear infinite;
 }
 
+/* Gold shine and texture effects */
+@keyframes goldShine {
+  0% {
+    background-position: -200% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
+}
+
+.gold-shine {
+  position: relative;
+  background: linear-gradient(
+    135deg,
+    #d4a574 0%,
+    #C89B3C 25%,
+    #e8c47a 50%,
+    #C89B3C 75%,
+    #b88a2c 100%
+  );
+  background-size: 200% 200%;
+  animation: goldShine 3s ease-in-out infinite;
+  box-shadow: 
+    0 4px 16px rgba(200, 155, 60, 0.4),
+    0 2px 8px rgba(200, 155, 60, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.1);
+}
+
+.gold-shine::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(255, 255, 255, 0.03) 2px,
+      rgba(255, 255, 255, 0.03) 4px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 2px,
+      rgba(0, 0, 0, 0.02) 2px,
+      rgba(0, 0, 0, 0.02) 4px
+    );
+  pointer-events: none;
+  border-radius: inherit;
+  opacity: 0.6;
+}
+
+.gold-text {
+  background: linear-gradient(
+    135deg,
+    #d4a574 0%,
+    #C89B3C 30%,
+    #e8c47a 50%,
+    #C89B3C 70%,
+    #b88a2c 100%
+  );
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: 0 2px 4px rgba(200, 155, 60, 0.3);
+  position: relative;
+  animation: goldShine 4s ease-in-out infinite;
+}
+
+.gold-text::after {
+  content: attr(data-text);
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: -1;
+  background: linear-gradient(
+    135deg,
+    #d4a574 0%,
+    #C89B3C 30%,
+    #e8c47a 50%,
+    #C89B3C 70%,
+    #b88a2c 100%
+  );
+  filter: blur(8px);
+  opacity: 0.5;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.gold-border {
+  border-color: #C89B3C;
+  box-shadow: 
+    0 0 0 1px rgba(200, 155, 60, 0.3),
+    0 0 8px rgba(200, 155, 60, 0.2),
+    inset 0 0 4px rgba(200, 155, 60, 0.1);
+}
+
+.gold-border-shine {
+  border-color: #C89B3C !important;
+  box-shadow: 
+    0 0 0 1px rgba(200, 155, 60, 0.3),
+    0 0 8px rgba(200, 155, 60, 0.2),
+    inset 0 0 4px rgba(200, 155, 60, 0.1) !important;
+}
+
+.gold-bg {
+  background: linear-gradient(
+    135deg,
+    #d4a574 0%,
+    #C89B3C 25%,
+    #e8c47a 50%,
+    #C89B3C 75%,
+    #b88a2c 100%
+  );
+  background-size: 200% 200%;
+  position: relative;
+  box-shadow: 
+    0 4px 16px rgba(200, 155, 60, 0.4),
+    0 2px 8px rgba(200, 155, 60, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.1);
+}
+
+.gold-bg::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 3px,
+      rgba(255, 255, 255, 0.04) 3px,
+      rgba(255, 255, 255, 0.04) 6px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 3px,
+      rgba(0, 0, 0, 0.03) 3px,
+      rgba(0, 0, 0, 0.03) 6px
+    );
+  pointer-events: none;
+  border-radius: inherit;
+  opacity: 0.7;
+}
+
 /**
  * Using the elevate system.
  * Automatic contrast adjustment.
