@@ -48,6 +48,10 @@ export async function generateQuoteEstimate(projectDetails: {
   timeline?: string;
   location?: string;
 }): Promise<string> {
+  if (!process.env.OPENAI_API_KEY) {
+    throw new Error("OPENAI_API_KEY is not configured. Please contact us directly for a quote.");
+  }
+
   const prompt = `Based on the following project details, provide a helpful estimate range and recommendations for a ${projectDetails.serviceType} project. Be informative but make clear these are rough estimates and a proper on-site assessment is needed for accurate pricing.
 
 Project Details:
@@ -65,19 +69,35 @@ Provide:
 
 Format the response in a clear, professional manner.`;
 
-  const response = await openai.chat.completions.create({
-    model: MODEL,
-    messages: [
-      {
-        role: "system",
-        content: "You are a knowledgeable construction and remodeling expert providing helpful estimates and advice. Always emphasize that actual quotes require an on-site assessment. Be professional and helpful."
-      },
-      { role: "user", content: prompt }
-    ],
-    max_completion_tokens: 2048,
-  });
+  try {
+    const response = await openai.chat.completions.create({
+      model: MODEL,
+      messages: [
+        {
+          role: "system",
+          content: "You are a knowledgeable construction and remodeling expert providing helpful estimates and advice. Always emphasize that actual quotes require an on-site assessment. Be professional and helpful."
+        },
+        { role: "user", content: prompt }
+      ],
+      max_completion_tokens: 2048,
+    });
 
-  return response.choices[0]?.message?.content || "Unable to generate estimate. Please contact us directly for a quote.";
+    const content = response.choices[0]?.message?.content;
+    if (!content) {
+      throw new Error("No response from AI model");
+    }
+
+    return content;
+  } catch (error) {
+    console.error("OpenAI API error in generateQuoteEstimate:", error);
+    if (error instanceof Error) {
+      if (error.message.includes("API key")) {
+        throw new Error("AI service configuration error. Please contact us directly for a quote.");
+      }
+      throw error;
+    }
+    throw new Error("Failed to generate estimate. Please contact us directly for a quote.");
+  }
 }
 
 // Generate content for admin (descriptions, marketing copy, etc.)

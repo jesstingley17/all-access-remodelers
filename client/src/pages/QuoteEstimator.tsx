@@ -9,6 +9,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { apiRequest } from "@/lib/queryClient";
+import { useToast } from "@/hooks/use-toast";
 import { Calculator, Sparkles, ArrowRight, Loader2, FileText, Phone } from "lucide-react";
 import { Link } from "wouter";
 
@@ -26,6 +27,7 @@ const serviceTypes = [
 ];
 
 export default function QuoteEstimator() {
+  const { toast } = useToast();
   const [serviceType, setServiceType] = useState("");
   const [projectDescription, setProjectDescription] = useState("");
   const [squareFootage, setSquareFootage] = useState("");
@@ -45,7 +47,24 @@ export default function QuoteEstimator() {
       return res.json();
     },
     onSuccess: (data) => {
-      setEstimate(data.estimate);
+      if (data.estimate) {
+        setEstimate(data.estimate);
+      } else {
+        toast({
+          title: "Error",
+          description: "No estimate was returned. Please try again or contact us directly.",
+          variant: "destructive",
+        });
+      }
+    },
+    onError: (error) => {
+      console.error("Error getting estimate:", error);
+      const errorMessage = error instanceof Error ? error.message : "Failed to generate estimate. Please try again or contact us directly.";
+      toast({
+        title: "Error",
+        description: errorMessage,
+        variant: "destructive",
+      });
     },
   });
 

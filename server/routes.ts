@@ -161,7 +161,7 @@ export async function registerRoutes(
     next();
   };
 
-  // Contact form submission
+  // Contact form submission with email via Resend
   app.post("/api/contacts", async (req, res) => {
     try {
       const result = insertContactSchema.safeParse(req.body);
@@ -169,7 +169,75 @@ export async function registerRoutes(
         return res.status(400).json({ error: "Invalid form data", details: result.error.errors });
       }
       
-      const contact = await storage.createContact(result.data);
+      const contactData = result.data;
+      const contact = await storage.createContact(contactData);
+      
+      const resendApiKey = process.env.RESEND_API_KEY;
+      // Send to both ali@ and info@ email addresses
+      const adminEmails = process.env.ADMIN_EMAIL 
+        ? process.env.ADMIN_EMAIL.split(',').map(email => email.trim())
+        : ["ali@allaccessremodelers.com", "info@allaccessremodelers.com"];
+      
+      if (resendApiKey) {
+        try {
+          const resend = new Resend(resendApiKey);
+          
+          // Email to admin/company
+          const adminEmailHtml = `
+            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+              <h2 style="color: #111418;">New Contact Form Submission</h2>
+              <div style="background-color: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0;">
+                <p><strong>Name:</strong> ${contactData.name}</p>
+                <p><strong>Email:</strong> ${contactData.email}</p>
+                ${contactData.phone ? `<p><strong>Phone:</strong> ${contactData.phone}</p>` : ''}
+                <p><strong>Service:</strong> ${contactData.service}</p>
+              </div>
+              <div style="background-color: #fff; padding: 20px; border-left: 4px solid #C89B3C; margin: 20px 0;">
+                <h3 style="color: #111418; margin-top: 0;">Message:</h3>
+                <p style="white-space: pre-wrap;">${contactData.message}</p>
+              </div>
+            </div>
+          `;
+
+          // Email confirmation to customer
+          const customerEmailHtml = `
+            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+              <h2 style="color: #111418;">Thank You for Contacting Us!</h2>
+              <p>Hi ${contactData.name},</p>
+              <p>We've received your message and will get back to you as soon as possible. Our team typically responds within 24 hours.</p>
+              <div style="background-color: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0;">
+                <p style="margin: 0;"><strong>Service Requested:</strong> ${contactData.service}</p>
+              </div>
+              <p>If you have any urgent questions, please don't hesitate to call us at <a href="tel:+16146323495" style="color: #C89B3C;">+1 (614) 632-3495</a>.</p>
+              <p>Best regards,<br>The All Access Remodelers Team</p>
+            </div>
+          `;
+
+          // Send email to all admin emails
+          await resend.emails.send({
+            from: "All Access Remodelers <onboarding@resend.dev>", // Update this with your verified domain
+            to: adminEmails,
+            subject: `New Contact Form: ${contactData.service} - ${contactData.name}`,
+            html: adminEmailHtml,
+          });
+
+          // Send confirmation email to customer
+          await resend.emails.send({
+            from: "All Access Remodelers <onboarding@resend.dev>", // Update this with your verified domain
+            to: contactData.email,
+            subject: "We've Received Your Message - All Access Remodelers",
+            html: customerEmailHtml,
+          });
+
+          console.log(`Contact form emails sent for: ${contactData.email}`);
+        } catch (emailError) {
+          console.error("Error sending contact form emails:", emailError);
+          // Don't fail the request if email fails - the contact is still saved
+        }
+      } else {
+        console.warn("RESEND_API_KEY is not configured - contact form submitted but no emails sent");
+      }
+      
       res.status(201).json(contact);
     } catch (error) {
       console.error("Error creating contact:", error);
@@ -359,6 +427,8 @@ export async function registerRoutes(
         return res.status(400).json({ error: "Service type and project description are required" });
       }
       
+      console.log(`[API] POST /api/quote-estimate - Generating estimate for: ${serviceType}`);
+      
       const estimate = await generateQuoteEstimate({
         serviceType,
         projectDescription,
@@ -366,10 +436,17 @@ export async function registerRoutes(
         timeline,
         location,
       });
+      
+      if (!estimate) {
+        throw new Error("Failed to generate estimate - empty response from AI");
+      }
+      
+      console.log(`[API] POST /api/quote-estimate - Success`);
       res.json({ estimate });
     } catch (error) {
       console.error("Quote estimate error:", error);
-      res.status(500).json({ error: "Failed to generate estimate" });
+      const errorMessage = error instanceof Error ? error.message : "Failed to generate estimate";
+      res.status(500).json({ error: errorMessage });
     }
   });
 
@@ -493,12 +570,14 @@ export async function registerRoutes(
         </div>
       `;
 
-      // Send email to admin (you can change this to your desired admin email)
-      const adminEmail = process.env.ADMIN_EMAIL || "admin@allaccessremodelers.com";
+      // Send email to both ali@ and info@ email addresses
+      const adminEmails = process.env.ADMIN_EMAIL 
+        ? process.env.ADMIN_EMAIL.split(',').map(email => email.trim())
+        : ["ali@allaccessremodelers.com", "info@allaccessremodelers.com"];
       
       const emailOptions: any = {
         from: "All Access Remodelers <onboarding@resend.dev>", // Update this with your verified domain
-        to: adminEmail,
+        to: adminEmails,
         subject: `New Maintenance Request - ${requestData.issueType} (${requestData.urgency})`,
         html: adminEmailHtml,
       };

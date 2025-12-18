@@ -7,6 +7,7 @@ const navLinks = [
   { href: "/gallery", label: "Gallery" },
   { href: "/quote-estimator", label: "Get Estimate" },
   { href: "/maintenance-request", label: "Maintenance Request" },
+  { href: "/contact", label: "Contact" },
 ];
 
 export function Navigation() {
